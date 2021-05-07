@@ -1,0 +1,31 @@
+/* Autor: Elena Chong
+   Fecha: Septiembre 11, 2016
+   Titulo: Ejemplo básico de cómo utilizar el "Relay-5V" SKU: SM0002
+   Descripcion: Este programa te permitira utilizar el Relay como un switch para controlar el componente de carga.
+   Conexión del componente al Arduino Uno:
+    S: pin 2
+    +: 5V
+    -: GND
+   TINKERALL.COM
+*/
+
+// Definir
+int relay = 2;
+
+void setup() {
+  // Configuración
+  pinMode(relay, OUTPUT); // Configurar relay como salida o OUTPUT
+  Serial.begin(9600); // Abrir el puerto serie a la velocidad de 9600bps para trasnmicion de datos.
+}
+
+void loop() {
+  // Código principal donde ocurren en loop
+  digitalWrite(relay, LOW); // envia señal baja al relay
+  Serial.println("Relay no accionado");
+  delay(10000);           // 10 segundos
+  
+  digitalWrite(relay, HIGH);  // envia señal alta al relay
+  Serial.println("Relay accionado");
+  delay(10000);           // 10 segundos
+
+}

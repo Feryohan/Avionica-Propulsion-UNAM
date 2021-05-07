@@ -1,0 +1,1 @@
+NLectura,Millis,Altura,AcelX,AcelY,AcelZ,MagX,MagY,MagZ,GyroX,GyroY,GyroZ,Estado
