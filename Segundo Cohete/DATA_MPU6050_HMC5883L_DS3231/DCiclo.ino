@@ -7,20 +7,8 @@ void loop() {
   tiempo2 = millis();
   if(tiempo2 > (tiempo1+1000)){
     tiempo1 = millis();
-    DateTime fecha = rtc.now();
-    Serial.println("/////////////////////////////////////////////////////");
-    Serial.print(fecha.day());
-    Serial.print("/");
-    Serial.print(fecha.month());
-    Serial.print("/");
-    Serial.print(fecha.year());
-    Serial.print(" ");
-    Serial.print(fecha.hour());
-    Serial.print(":");
-    Serial.print(fecha.minute());
-    Serial.print(":");
-    Serial.println(fecha.second());
-    Serial.println("/////////////////////////////////////////////////////");
+    DateTime dia = rtc.now();
+    fecha = dia.day() + diagonal + dia.month() + diagonal + dia.hour() + dosPuntos + dia.minute() + dosPuntos + dia.second();
   }
   
     //archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
@@ -41,7 +29,9 @@ void loop() {
     Serial.print(",");
     Serial.print(gy,1);
     Serial.print(",");
-    Serial.println(gz,1);
+    Serial.print(gz,1);
+    Serial.print(",");
+    Serial.println(fecha);
   //}
   //archivo.close();
 }

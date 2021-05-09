@@ -1,4 +1,4 @@
-//                                --- CONEXIONES ---
+//                          --- CONEXIONES ---
 //   Magnetometro GY-271      IMU GY-521     Modulo MicroSD        RTC
 //        VCC - 5V             VCC - 5V        GND - GND        SCL - A5
 //        GND - GND            GND - GND       VCC - 5V         SDA - A4
@@ -50,6 +50,9 @@ MPU6050lib mpu;
 RTC_DS3231 rtc;                  // crea objeto del tipo RTC_DS3231
 unsigned long tiempo1 = 0;       //Tiempos necesarios para determinar cuando a pasado un segundo
 unsigned long tiempo2 = 0;       //y así tomar la lectura del reloj
+String fecha = "";
+String dosPuntos = ":";
+String diagonal = "/";
 
 //-> Módulo MicroSD
 //File archivo;                  //Objeto "archivo" del tipo File

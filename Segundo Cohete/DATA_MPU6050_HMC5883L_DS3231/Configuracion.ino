@@ -32,5 +32,5 @@ void setup() {
     while(1){
     }
   }*/
-  Serial.println("MagX,MagY,MagZ,AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ");
+  Serial.println("MagX,MagY,MagZ,AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Fecha");
 }
