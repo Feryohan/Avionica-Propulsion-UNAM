@@ -8,7 +8,7 @@ void setup() {
   tiempo1 = millis();
   
   //->Inicializacion del modulo micro SD
-/*  if (!SD.begin(SSpin))     //Si la tarjeta SD no inicia correctamente  
+  if (!SD.begin(SSpin))     //Si la tarjeta SD no inicia correctamente  
    {
     Serial.print("La tarjeta SD no se inicio correctamente");      
     while(1){
@@ -23,7 +23,7 @@ void setup() {
   archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
   //Si el archivo se crea correctamente
   if (archivo) {
-    archivo.println("MagX,MagY,MagZ,AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ");
+    archivo.println("MagX,MagY,MagZ,AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Fecha");
     archivo.close();
   }
   //Si el archivo no se crea correctamente
@@ -31,6 +31,5 @@ void setup() {
     Serial.print("El archivo no se creo correctamente");
     while(1){
     }
-  }*/
-  Serial.println("MagX,MagY,MagZ,AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Fecha");
+  }
 }
