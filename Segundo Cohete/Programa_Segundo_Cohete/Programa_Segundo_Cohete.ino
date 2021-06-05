@@ -40,7 +40,7 @@ byte addressGPS = 6;
 
 //--- BIBLIOTECAS ---
 #include <Wire.h>        //Libreria para la comunicacion I2C
-#include <avr/wdt.h>     //Librería del watchdog 
+
 #include <HMC5883L.h>    //Libreria para el magnetometro
 #include <MPU6050.h>     //Libreria para el MPU
 #include <RTClib.h>      //Libreria para el manejo del modulo RTC

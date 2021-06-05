@@ -1,9 +1,9 @@
 void setup() {
-  wdt_disable();
+ 
   Wire.begin();
   Serial.begin(9600);
   Serial.println("Arduino iniciado");
-  wdt_enable(WDTO_2S);
+  
   
   // - - Configuración - -
   
@@ -11,39 +11,39 @@ void setup() {
   if(EEPROM.read(addressMPU) == 1){
     estadoSensor(0, addressMPU);
     MPUSelfTest();                             //Diagnostico y calibración del MPU
-    wdt_reset();
+//  wdt_reset();
     Serial.println("MPU configurado");
     estadoSensor(1, addressMPU);
   }
   else{
     Serial.println("MPU ignorado");
-    wdt_reset();
+//  wdt_reset();
   }
   
   //-> Magnetometro
   if(EEPROM.read(addressMagnetometro) == 1){
     estadoSensor(0, addressMagnetometro);
     magnetometro.initialize();                 //Inicialización del magnetometro
-    wdt_reset();
+    //wdt_reset();
     Serial.println("Magnetometro configurado");
     estadoSensor(1, addressMagnetometro);
   }
   else{
     Serial.println("Magnetometro ignorado");
-    wdt_reset();
+    //wdt_reset();
   }
 
   //-> RTC
   if(EEPROM.read(addressRTC) == 1){
     estadoSensor(0, addressRTC);
     rtc.adjust(DateTime(__DATE__, __TIME__));  //Obtener fecha actual
-    wdt_reset();
+    //wdt_reset();
     Serial.println("RTC configurado");
     estadoSensor(1, addressRTC);
   }
   else{
     Serial.println("Magnetometro ignorado");
-    wdt_reset();
+    //wdt_reset();
   }
   
   //-> Módulo MicroSD
@@ -58,13 +58,13 @@ void setup() {
     //Si el archivo se crea correctamente
     archivo.println("MagX,MagY,MagZ,AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Fecha");
     archivo.close();
-    wdt_reset();
+    //wdt_reset();
     Serial.println("El documento se creo correctamente");
     estadoSensor(1, addressMicroSD);
   }
   else{
     Serial.println("ModuloMicroSD ignorado");
-    wdt_reset();
+    //wdt_reset();
   }
     tiempo1 = millis();
 }
