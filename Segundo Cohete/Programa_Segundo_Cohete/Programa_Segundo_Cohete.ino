@@ -15,25 +15,32 @@
 //  - - Direcciones - -
 //-> MPU6050   - 0x69 (Con una alimentación de 3.3 V en el pin AD0)
 //-> HMC5883L  - 0x1E
-//-> RTC - 0x57 / 0x68
+//-> RTC       - 0x57 / 0x68
 
 // - - Direcciones de la memoria EEPROM - -
-//-> Estado de vuelo: E (estacionario), A (ascenso), D (descenso) = 0
-//-> Estado Barómetro: 0 (No funciona), 1 (Funciona)              = 1         
-//-> Estado Acelerómetro: 
-//-> Estado Módulo microSD: 
-//-> Estado Giroscopio: 
-//-> Estado Magnetómetro: 
-//-> Estado RTC: 
-//-> Estado GPS: 
-//-> Altura Barómetro cada segundo
-//-> Aceleración x cada segundo
-//-> Aceleración y cada segundo
-//-> Aceleración z cada segundo
-//-> Altura GPS
+//-> Estado de vuelo: E (69), A (65), D (68)
+byte addressVuelo = 0;
+//-> Estado Barómetro: 0 (No funciona), 1 (Funciona)
+byte addressBarometro = 1;
+//-> Estado Acelerómetro y Giroscopio (MPU):
+byte addressMPU = 2;
+//-> Estado Magnetómetro:
+byte addressMagnetometro = 3;
+//-> Estado Módulo microSD:
+byte addressMicroSD = 4;
+//-> Estado RTC:
+byte addressRTC = 5;
+//-> Estado GPS:
+byte addressGPS = 6;
+//-> Altura Barómetro cada segundo: float (4 bytes)       = 10 - 13
+//-> Aceleración x cada segundo: float (4 bytes)          = 14 - 17 
+//-> Aceleración y cada segundo: float (4 bytes)          = 18 - 21
+//-> Aceleración z cada segundo: float (4 bytes)          = 22 - 25
+//-> Altura GPS:  float (4 bytes)                         = 26 - 29
 
 //--- BIBLIOTECAS ---
 #include <Wire.h>        //Libreria para la comunicacion I2C
+#include <avr/wdt.h>     //Librería del watchdog 
 #include <HMC5883L.h>    //Libreria para el magnetometro
 #include <MPU6050.h>     //Libreria para el MPU
 #include <RTClib.h>      //Libreria para el manejo del modulo RTC
