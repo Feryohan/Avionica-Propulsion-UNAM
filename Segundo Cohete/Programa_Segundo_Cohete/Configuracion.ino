@@ -49,22 +49,33 @@ void setup() {
   //-> Módulo MicroSD
   if(EEPROM.read(addressMicroSD) == 1){
     estadoSensor(0, addressMicroSD);
-    //->Leer y actualizar el numero de archivo
-    nFile = EEPROM.read(500);          //Usamos la dirección 500 de la EEPROM
-    EEPROM.write(500,nFile+1);         //Tenemos un máximo de 255 archivos
-    nFile = EEPROM.read(500);
-    //->Crear archivo de datos de vuelo
-    archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
-    //Si el archivo se crea correctamente
-    archivo.println("MagX,MagY,MagZ,AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Fecha");
-    archivo.close();
+    if(SD.begin(SSpin)){
+      Serial.println("Modulo microSD iniciado");
+      //->Leer y actualizar el numero de archivo
+      nFile = EEPROM.read(500);          //Usamos la dirección 500 de la EEPROM
+      EEPROM.write(500,nFile+1);         //Tenemos un máximo de 255 archivos
+      nFile = EEPROM.read(500);
+      //->Crear archivo de datos de vuelo
+      archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
+      if(archivo){
+        //Si el archivo se crea correctamente
+        archivo.println("MagX,MagY,MagZ,AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Fecha");
+        archivo.close();
+        //wdt_reset();
+        Serial.println("El documento se creo correctamente");
+        estadoSensor(1, addressMicroSD);
+      }
+      else{
+        Serial.println("El archivo no se creo correctamente");
+      }
+    }
+    else{
+    Serial.println("Modulo microSD no ha iniciado correctamente");
     //wdt_reset();
-    Serial.println("El documento se creo correctamente");
-    estadoSensor(1, addressMicroSD);
+    }
   }
   else{
     Serial.println("ModuloMicroSD ignorado");
-    //wdt_reset();
   }
     tiempo1 = millis();
 }

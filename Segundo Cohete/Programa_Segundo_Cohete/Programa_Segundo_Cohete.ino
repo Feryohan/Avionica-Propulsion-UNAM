@@ -40,13 +40,15 @@ byte addressGPS = 6;
 
 //--- BIBLIOTECAS ---
 #include <Wire.h>        //Libreria para la comunicacion I2C
-
 #include <HMC5883L.h>    //Libreria para el magnetometro
 #include <MPU6050.h>     //Libreria para el MPU
 #include <RTClib.h>      //Libreria para el manejo del modulo RTC
 #include <SPI.h>         //Libreria interfaz SPI
 #include <SD.h>          //Libreria para tarjetas SD
 #include <EEPROM.h>      //Libreria que permite guardar valores cuando el arduino se apaga            
+//#include <NMEAGPS.h>     //Libreria NEOGPS requerida para el uso del GPS
+//#include <GPSport.h>     //Dentro del archivo se utiliza la libreria NeoSWSerial.h, que solo trabaja con 9600, 19200 o 38400 baud
+                         //Pero permite utilizar el pin 4 (RX) y el pin 3 (TX)
 
 //--- DEFINICIONES ---
 #define SSpin 10         //Pin Slave Select para el modulo micro SD
