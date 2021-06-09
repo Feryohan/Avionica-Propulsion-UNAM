@@ -5,12 +5,12 @@ void loop() {
   if(archivo){
     while(j<20){
       //Obteniendo datos raw del magnetometro
-      if(EEPROM.read(addressMagnetometro) == 1){
+     /* if(EEPROM.read(addressMagnetometro) == 1){
       magnetometro.getHeading(&mx, &my, &mz);
       }
       else{
         Serial.println("Sin datos del magnetometro");
-      }
+      }*/
       //Leer los datos del MPU
       if(EEPROM.read(addressMPU) == 1){
       MPUGetData();
@@ -18,8 +18,9 @@ void loop() {
       else{
         Serial.println("Sin datos del MPU");
       }
-      tiempo2 = millis();
+//      tiempo2 = millis();
       //Esta condición se cumple cada segundo que transcurre
+      /*
       if(EEPROM.read(addressRTC) == 1){
         if(tiempo2 > (tiempo1+1000)){
           tiempo1 = millis();
@@ -29,13 +30,13 @@ void loop() {
       }
       else{
         Serial.println("Sin RTC");
-      }
-      archivo.print(mx);
+      }*/
+    /*  archivo.print(mx);
       archivo.print(",");
       archivo.print(my);
       archivo.print(",");
       archivo.print(mz);
-      archivo.print(",");
+      archivo.print(",");*/
       archivo.print(1000*ax);
       archivo.print(",");
       archivo.print(1000*ay);
@@ -46,9 +47,9 @@ void loop() {
       archivo.print(",");
       archivo.print(gy,1);
       archivo.print(",");
-      archivo.print(gz,1);
+      archivo.println(gz,1);/*
       archivo.print(",");
-      archivo.println(fecha);  
+      archivo.println(fecha);  */
       j = j+1;
     }
  }

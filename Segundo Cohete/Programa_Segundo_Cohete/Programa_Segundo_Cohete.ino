@@ -40,7 +40,7 @@ byte addressGPS = 6;
 
 //--- BIBLIOTECAS ---
 #include <Wire.h>        //Libreria para la comunicacion I2C
-#include <HMC5883L.h>    //Libreria para el magnetometro
+//#include <HMC5883L.h>    //Libreria para el magnetometro
 #include <MPU6050.h>     //Libreria para el MPU
 #include <RTClib.h>      //Libreria para el manejo del modulo RTC
 #include <SPI.h>         //Libreria interfaz SPI
@@ -55,8 +55,8 @@ byte addressGPS = 6;
 
 //--- VARIABLES ---
 //-> Magnetometro
-HMC5883L magnetometro;
-int16_t mx, my, mz;              //Unidades = 
+//HMC5883L magnetometro;
+//int16_t mx, my, mz;              //Unidades = 
 
 //-> IMU
 MPU6050lib mpu;
@@ -69,13 +69,13 @@ float SelfTest[6];               // Gyro and accelerometer self-test sensor outp
 float aRes, gRes;                // Scale resolutions per LSB for the sensors
 
 //-> RTC
-RTC_DS3231 rtc;
+/*RTC_DS3231 rtc;
 unsigned long tiempo1 = 0;       //Tiempos necesarios para determinar cuando a pasado un segundo
 unsigned long tiempo2 = 0;       //y así tomar la lectura del reloj
 String fecha = "";               //Esta variable concatena el dia/mes/hora:minuto:segundo del reloj  
 String dosPuntos = ":";
 String diagonal = "/";
-
+*/
 //-> Módulo MicroSD
 File archivo;                  //Objeto "archivo" del tipo File
 byte nFile;                    //Numero de archivo

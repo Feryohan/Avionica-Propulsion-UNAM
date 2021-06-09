@@ -21,7 +21,7 @@ void setup() {
   }
   
   //-> Magnetometro
-  if(EEPROM.read(addressMagnetometro) == 1){
+ /* if(EEPROM.read(addressMagnetometro) == 1){
     estadoSensor(0, addressMagnetometro);
     magnetometro.initialize();                 //Inicialización del magnetometro
     //wdt_reset();
@@ -45,7 +45,7 @@ void setup() {
     Serial.println("Magnetometro ignorado");
     //wdt_reset();
   }
-  
+*/  
   //-> Módulo MicroSD
   if(EEPROM.read(addressMicroSD) == 1){
     estadoSensor(0, addressMicroSD);
@@ -77,5 +77,5 @@ void setup() {
   else{
     Serial.println("ModuloMicroSD ignorado");
   }
-    tiempo1 = millis();
+//    tiempo1 = millis();
 }

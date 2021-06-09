@@ -23,6 +23,10 @@ void setup() {
   Serial.println(EEPROM.read(1));
   Serial.println(EEPROM.read(2));
   Serial.println(EEPROM.read(3));
+  Serial.println(EEPROM.read(4));
+  Serial.println(EEPROM.read(5));
+  Serial.println(EEPROM.read(6));
+  Serial.println(EEPROM.read(7));
 }
 
 void loop() {
