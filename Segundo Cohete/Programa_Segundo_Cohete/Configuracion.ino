@@ -1,19 +1,16 @@
 void setup() {
   Serial.begin(9600);
   Wire.begin();
-  Serial.println("Arduino iniciado");
-  // - - Configuración - -
   
+  // - - Configuración - -
   //-> MPU
   if(EEPROM.read(addressMPU) == 1){
     estadoSensor(0, addressMPU);
     MPUSelfTest();                             //Diagnostico y calibración del MPU
 //  wdt_reset();
-    Serial.println("MPU configurado");
     estadoSensor(1, addressMPU);
   }
   else{
-    Serial.println("MPU ignorado");
 //  wdt_reset();
   }
 
@@ -50,7 +47,6 @@ void setup() {
   if(EEPROM.read(addressMicroSD) == 1){
     estadoSensor(0, addressMicroSD);
     if(SD.begin(SSpin)){
-      Serial.println("Modulo microSD iniciado");
       //->Leer y actualizar el numero de archivo
       nFile = EEPROM.read(500);          //Usamos la dirección 500 de la EEPROM
       EEPROM.write(500,nFile+1);         //Tenemos un máximo de 255 archivos
@@ -62,20 +58,18 @@ void setup() {
         archivo.println("AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Latitud,Longitud,Altitud");
         archivo.close();
         //wdt_reset();
-        Serial.println("El documento se creo correctamente");
         estadoSensor(1, addressMicroSD);
       }
       else{
-        Serial.println("El archivo no se creo correctamente");
+        
       }
     }
     else{
-    Serial.println("Modulo microSD no ha iniciado correctamente");
+    
     //wdt_reset();
     }
   }
   else{
-    Serial.println("ModuloMicroSD ignorado");
   }
 //    tiempo1 = millis();
 }
