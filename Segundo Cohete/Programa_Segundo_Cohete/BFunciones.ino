@@ -2,6 +2,8 @@ void estadoSensor(byte estado, byte address){
     EEPROM.write(address, estado);
 }
 
+//- - - Configuración - - -
+
 void MPUSelfTest(){
   mpu.MPU6050SelfTest(SelfTest); // Start by performing self test and reporting values
   if(SelfTest[0] < 1.0f && SelfTest[1] < 1.0f && SelfTest[2] < 1.0f && SelfTest[3] < 1.0f && SelfTest[4] < 1.0f && SelfTest[5] < 1.0f) {
@@ -35,4 +37,78 @@ void MPUGetData(){
     gy = (float)gyroCount[1]*gRes - gyroBias[1];  
     gz = (float)gyroCount[2]*gRes - gyroBias[2];   
    }  
+}
+
+// - - - Ciclo - - -
+
+void datosGPS(){
+  while(gps.available( gpsPort )){
+    fix = gps.read();
+  }
+}
+
+/*void datosMagnetometro(){
+  if(EEPROM.read(addressMagnetometro) == 1){
+    estadoSensor(0, addressMagnetometro);
+    magnetometro.getHeading(&mx, &my, &mz);
+    estadoSensor(1, addressMagnetometro);
+  }
+  else{
+     Serial.println("Sin datos del magnetometro");
+  }
+}*/
+
+void datosMPU(){
+  if(EEPROM.read(addressMPU) == 1){
+    estadoSensor(0, addressMPU);
+    MPUGetData();
+    estadoSensor(1, addressMPU);
+  }
+  else{
+    Serial.println("Sin datos del MPU");
+  }
+}
+
+/*void datosRTC(){
+  tiempo2 = millis();
+  if(EEPROM.read(addressRTC) == 1){
+    estadoSensor(0,addressRTC);
+    if(tiempo2 > (tiempo1+1000)){
+        tiempo1 = millis();
+        DateTime dia = rtc.now();
+        fecha = dia.day() + diagonal + dia.month() + diagonal + dia.hour() + dosPuntos + dia.minute() + dosPuntos + dia.second();
+        estadoSensor(1,addressRTC);
+      }
+    }
+    else{
+      Serial.println("Sin RTC");
+    }
+}
+*/
+void escribirDatos(){
+/*  archivo.print(mx);
+  archivo.print(",");
+  archivo.print(my);
+  archivo.print(",");
+  archivo.print(mz);
+  archivo.print(",");*/
+  archivo.print(1000*ax);
+  archivo.print(",");
+  archivo.print(1000*ay);
+  archivo.print(",");
+  archivo.print(1000*az);
+  archivo.print(",");
+  archivo.print(gx,1);
+  archivo.print(",");
+  archivo.print(gy,1);
+  archivo.print(",");
+  archivo.print(gz,1);
+  archivo.print(",");
+  archivo.print(fix.latitude(), 6);
+  archivo.print(",");
+  archivo.print(fix.longitude(), 6);
+  archivo.print(",");
+  archivo.println(fix.altitude());
+/*archivo.print(",");
+  archivo.println(fecha);*/
 }

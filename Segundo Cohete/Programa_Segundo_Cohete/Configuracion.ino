@@ -1,10 +1,7 @@
 void setup() {
- 
-  Wire.begin();
   Serial.begin(9600);
+  Wire.begin();
   Serial.println("Arduino iniciado");
-  
-  
   // - - Configuración - -
   
   //-> MPU
@@ -19,6 +16,9 @@ void setup() {
     Serial.println("MPU ignorado");
 //  wdt_reset();
   }
+
+  //GPS
+  gpsPort.begin(9600);
   
   //-> Magnetometro
  /* if(EEPROM.read(addressMagnetometro) == 1){
@@ -59,7 +59,7 @@ void setup() {
       archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
       if(archivo){
         //Si el archivo se crea correctamente
-        archivo.println("MagX,MagY,MagZ,AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Fecha");
+        archivo.println("AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Latitud,Longitud,Altitud");
         archivo.close();
         //wdt_reset();
         Serial.println("El documento se creo correctamente");
