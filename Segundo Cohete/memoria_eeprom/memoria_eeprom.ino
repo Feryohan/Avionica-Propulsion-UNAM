@@ -10,8 +10,8 @@ byte siete = 1;
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
- /* EEPROM.put(1,uno);
+ /* Serial.begin(9600);
+  EEPROM.put(1,uno);
   EEPROM.put(2,dos);
   EEPROM.put(3,tres);
   EEPROM.put(4,cuatro);
