@@ -19,24 +19,18 @@
 
 // - - Direcciones de la memoria EEPROM - -
 //-> Estado de vuelo: E (69), A (65), D (68)
-byte addressVuelo = 0;
 //-> Estado Barómetro: 0 (No funciona), 1 (Funciona)
-byte addressBarometro = 1;
 //-> Estado Acelerómetro y Giroscopio (MPU):
-byte addressMPU = 2;
 //-> Estado Magnetómetro:
-byte addressMagnetometro = 3;
 //-> Estado Módulo microSD:
-byte addressMicroSD = 4;
 //-> Estado RTC:
-byte addressRTC = 5;
 //-> Estado GPS:
-byte addressGPS = 6;
 //-> Altura Barómetro cada segundo: float (4 bytes)       = 10 - 13
 //-> Aceleración x cada segundo: float (4 bytes)          = 14 - 17 
 //-> Aceleración y cada segundo: float (4 bytes)          = 18 - 21
 //-> Aceleración z cada segundo: float (4 bytes)          = 22 - 25
 //-> Altura GPS:  float (4 bytes)                         = 26 - 29
+byte addressVuelo = 0, addressBarometro = 1, addressMPU = 2, addressMagnetometro = 3, addressMicroSD = 4, addressRTC = 5, addressGPS = 6;
 
 //--- BIBLIOTECAS ---
 #include <Wire.h>        //Libreria para la comunicacion I2C

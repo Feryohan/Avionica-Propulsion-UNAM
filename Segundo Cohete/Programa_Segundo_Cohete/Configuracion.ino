@@ -48,24 +48,11 @@ void setup() {
     estadoSensor(0, addressMicroSD);
     if(SD.begin(SSpin)){
       //->Leer y actualizar el numero de archivo
-      nFile = EEPROM.read(500);          //Usamos la dirección 500 de la EEPROM
-      EEPROM.write(500,nFile+1);         //Tenemos un máximo de 255 archivos
-      nFile = EEPROM.read(500);
+      numeroArchivo();
       //->Crear archivo de datos de vuelo
-      archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
-      if(archivo){
-        //Si el archivo se crea correctamente
-        archivo.println("AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Latitud,Longitud,Altitud");
-        archivo.close();
-        //wdt_reset();
-        estadoSensor(1, addressMicroSD);
-      }
-      else{
-        
-      }
+      iniciarArchivo();
     }
     else{
-    
     //wdt_reset();
     }
   }

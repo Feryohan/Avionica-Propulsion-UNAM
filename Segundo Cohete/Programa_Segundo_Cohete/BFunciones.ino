@@ -2,6 +2,26 @@ void estadoSensor(byte estado, byte address){
     EEPROM.write(address, estado);
 }
 
+void numeroArchivo(){
+  nFile = EEPROM.read(500);          //Usamos la dirección 500 de la EEPROM
+  EEPROM.write(500,nFile+1);         //Tenemos un máximo de 255 archivos
+  nFile = EEPROM.read(500);
+}
+
+void iniciarArchivo(){
+  archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
+    if(archivo){
+      //Si el archivo se crea correctamente
+      archivo.println("AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Latitud,Longitud,Altitud");
+      archivo.close();
+      //wdt_reset();
+      estadoSensor(1, addressMicroSD);
+    }
+    else{
+        
+    }
+}
+
 //- - - Configuración - - -
 
 void MPUSelfTest(){
@@ -12,8 +32,7 @@ void MPUSelfTest(){
     }
   else
     {
-    Serial.print("Could not connect to MPU6050");
-    while(1) ; // Loop forever if communication doesn't happen
+      //
     }
 }
 
@@ -54,7 +73,6 @@ void datosGPS(){
     estadoSensor(1, addressMagnetometro);
   }
   else{
-     Serial.println("Sin datos del magnetometro");
   }
 }*/
 
@@ -65,7 +83,7 @@ void datosMPU(){
     estadoSensor(1, addressMPU);
   }
   else{
-    Serial.println("Sin datos del MPU");
+
   }
 }
 

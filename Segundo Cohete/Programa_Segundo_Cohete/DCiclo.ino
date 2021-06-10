@@ -22,6 +22,6 @@ void loop() {
     estadoSensor(1, addressMicroSD);
   }
   else{
-    Serial.println("No se pueden guardar los datos");
+    
   }
 }
