@@ -11,13 +11,13 @@ byte siete = 1;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  EEPROM.put(1,uno);
+ /* EEPROM.put(1,uno);
   EEPROM.put(2,dos);
   EEPROM.put(3,tres);
   EEPROM.put(4,cuatro);
   EEPROM.put(5,cinco);
   EEPROM.put(6,seis);
-  EEPROM.put(7,siete);
+  EEPROM.put(7,siete);*/
 
   Serial.println(EEPROM.read(0));
   Serial.println(EEPROM.read(1));

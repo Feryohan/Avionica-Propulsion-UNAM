@@ -12,7 +12,7 @@ void iniciarArchivo(){
   archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
     if(archivo){
       //Si el archivo se crea correctamente
-      archivo.println("AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Latitud,Longitud,Altitud");
+      archivo.println("MagX,MagY,MagZ,AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Latitud,Longitud,Altitud");
       archivo.close();
       //wdt_reset();
       estadoSensor(1, addressMicroSD);
@@ -66,7 +66,7 @@ void datosGPS(){
   }
 }
 
-/*void datosMagnetometro(){
+void datosMagnetometro(){
   if(EEPROM.read(addressMagnetometro) == 1){
     estadoSensor(0, addressMagnetometro);
     magnetometro.getHeading(&mx, &my, &mz);
@@ -74,7 +74,7 @@ void datosGPS(){
   }
   else{
   }
-}*/
+}
 
 void datosMPU(){
   if(EEPROM.read(addressMPU) == 1){
@@ -104,12 +104,12 @@ void datosMPU(){
 }
 */
 void escribirDatos(){
-/*  archivo.print(mx);
+  archivo.print(mx);
   archivo.print(",");
   archivo.print(my);
   archivo.print(",");
   archivo.print(mz);
-  archivo.print(",");*/
+  archivo.print(",");
   archivo.print(1000*ax);
   archivo.print(",");
   archivo.print(1000*ay);

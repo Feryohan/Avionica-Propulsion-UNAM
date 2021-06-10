@@ -34,7 +34,7 @@ byte addressVuelo = 0, addressBarometro = 1, addressMPU = 2, addressMagnetometro
 
 //--- BIBLIOTECAS ---
 #include <Wire.h>        //Libreria para la comunicacion I2C
-//#include <HMC5883L.h>    //Libreria para el magnetometro
+#include <HMC5883L.h>    //Libreria para el magnetometro
 #include <MPU6050.h>     //Libreria para el MPU
 //#include <RTClib.h>      //Libreria para el manejo del modulo RTC
 #include <SPI.h>         //Libreria interfaz SPI
@@ -49,8 +49,8 @@ byte addressVuelo = 0, addressBarometro = 1, addressMPU = 2, addressMagnetometro
 
 //--- VARIABLES ---
 //-> Magnetometro
-//HMC5883L magnetometro;
-//int16_t mx, my, mz;              //Unidades = 
+HMC5883L magnetometro;
+int16_t mx, my, mz;              //Unidades = 
 
 //-> IMU
 MPU6050lib mpu;

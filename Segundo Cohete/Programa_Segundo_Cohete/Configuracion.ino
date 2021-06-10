@@ -14,24 +14,22 @@ void setup() {
 //  wdt_reset();
   }
 
-  //GPS
+  //-> GPS
   gpsPort.begin(9600);
   
   //-> Magnetometro
- /* if(EEPROM.read(addressMagnetometro) == 1){
+  if(EEPROM.read(addressMagnetometro) == 1){
     estadoSensor(0, addressMagnetometro);
     magnetometro.initialize();                 //Inicialización del magnetometro
     //wdt_reset();
-    Serial.println("Magnetometro configurado");
     estadoSensor(1, addressMagnetometro);
   }
   else{
-    Serial.println("Magnetometro ignorado");
     //wdt_reset();
   }
 
   //-> RTC
-  if(EEPROM.read(addressRTC) == 1){
+ /* if(EEPROM.read(addressRTC) == 1){
     estadoSensor(0, addressRTC);
     rtc.adjust(DateTime(__DATE__, __TIME__));  //Obtener fecha actual
     //wdt_reset();

@@ -6,7 +6,7 @@ void loop() {
       if(archivo){
         while(j<20){
           //Obteniendo datos raw del magnetometro
-            //datosMagnetometro();
+            datosMagnetometro();
           //Leer los datos del MPU
             datosMPU();
           //GPS
