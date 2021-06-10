@@ -76,7 +76,7 @@ void datosMagnetometro(){
   }
 }
 
-void datosMPU(){
+ void datosMPU(){
   if(EEPROM.read(addressMPU) == 1){
     estadoSensor(0, addressMPU);
     MPUGetData();

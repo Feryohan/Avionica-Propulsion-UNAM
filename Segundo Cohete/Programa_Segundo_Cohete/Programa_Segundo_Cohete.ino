@@ -12,6 +12,26 @@
 //-> https://github.com/kriswiner/MPU6050/tree/master/MPU6050Library
 //-> El RTC envía información cada vez que transcurre un segundo
 
+//- - - Con: MicroSD, GPS, MPU, Magnetometro
+// -> Almacenamiento: 87% (23634 bytes)
+// -> Dinamica: 73% (1513 bytes)
+
+//- - - GPS
+// -> Almacenamiento: 17% (5222 bytes)
+// -> Dinamica: 11% (225 bytes)
+
+//- - - MPU
+// -> Almacenamiento: 20% (6144 bytes)
+// -> Dinamica: 5% (102 bytes)
+
+//- - - Magnetometro
+// -> Almacenamiento: 6% (1843 bytes)
+// -> Dinamica: 2% (41 bytes)
+
+//- - - MicroSD
+// -> Almacenamiento: 44% (13516 bytes)
+// -> Dinamica: 55% (1126 bytes)
+
 //  - - Direcciones - -
 //-> MPU6050   - 0x69 (Con una alimentación de 3.3 V en el pin AD0)
 //-> HMC5883L  - 0x1E
