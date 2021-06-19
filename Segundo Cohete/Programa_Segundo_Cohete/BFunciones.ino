@@ -12,13 +12,14 @@ void iniciarArchivo(){
   archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
     if(archivo){
       //Si el archivo se crea correctamente
-      archivo.println("MagX,MagY,MagZ,AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Latitud,Longitud,Altitud");
+      archivo.println("AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Latitud,Longitud,Altitud,Hora");
       archivo.close();
       //wdt_reset();
       estadoSensor(1, addressMicroSD);
+      Serial.println("Archivo creado");
     }
     else{
-        
+      Serial.println("Archivo NO creado");  
     }
 }
 
@@ -109,17 +110,6 @@ if(serial.available()){
  }
 }*/
 
-void datosMagnetometro(){
-  if(EEPROM.read(addressMagnetometro) == 1){
-    estadoSensor(0, addressMagnetometro);
-    magnetometro.getHeading(&mx, &my, &mz);
-    estadoSensor(1, addressMagnetometro);
-  }
-  else{
-    Serial.println("Falló datos Magnetometro");
-  }
-}
-
  void datosMPU(){
   if(EEPROM.read(addressMPU) == 1){
     estadoSensor(0, addressMPU);
@@ -131,29 +121,23 @@ void datosMagnetometro(){
   }
 }
 
-/*void datosRTC(){
+void datosRTC(){
   tiempo2 = millis();
-  if(EEPROM.read(addressRTC) == 1){
-    estadoSensor(0,addressRTC);
-    if(tiempo2 > (tiempo1+1000)){
-        tiempo1 = millis();
-        DateTime dia = rtc.now();
-        fecha = dia.day() + diagonal + dia.month() + diagonal + dia.hour() + dosPuntos + dia.minute() + dosPuntos + dia.second();
-        estadoSensor(1,addressRTC);
-      }
-    }
+  if(tiempo2 > (tiempo1+1000)){
+    tiempo1 = millis();
+    if(EEPROM.read(addressRTC) == 1){
+      estadoSensor(0,addressRTC);
+      DateTime dia = rtc.now();
+      fecha = dia.day() + diagonal + dia.month() + diagonal + dia.hour() + dosPuntos + dia.minute() + dosPuntos + dia.second();
+      estadoSensor(1,addressRTC);
+    } 
     else{
       Serial.println("Sin RTC");
     }
+  }
 }
-*/
+
 void escribirDatos(){
-  archivo.print(mx);
-  archivo.print(",");
-  archivo.print(my);
-  archivo.print(",");
-  archivo.print(mz);
-  archivo.print(",");
   archivo.print(1000*ax);
   archivo.print(",");
   archivo.print(1000*ay);
@@ -170,7 +154,7 @@ void escribirDatos(){
   archivo.print(",");
   archivo.print("longitude");
   archivo.print(",");
-  archivo.println("altitude");
-/*archivo.print(",");
-  archivo.println(fecha);*/
+  archivo.print("altitude");
+  archivo.print(",");
+  archivo.println(fecha);
 }

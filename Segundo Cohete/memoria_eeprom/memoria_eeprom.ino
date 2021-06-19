@@ -1,32 +1,32 @@
 #include <EEPROM.h>
 
 byte uno = 1;
-byte dos = 1;
-byte tres = 1;
-byte cuatro = 1;
-byte cinco = 1;
-byte seis = 1;
-byte siete = 1;
+byte cero = 0;
+
+byte addressVuelo = 0, addressMPU = 1, addressBarometro = 2, addressRTC = 3, addressGPS = 4, addressMicroSD = 5;
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  EEPROM.put(1,uno);
-  EEPROM.put(2,dos);
-  EEPROM.put(3,tres);
-  EEPROM.put(4,cuatro);
-  EEPROM.put(5,cinco);
-  EEPROM.put(6,seis);
-  EEPROM.put(7,siete);
+  EEPROM.put(addressVuelo,uno);
+  EEPROM.put(addressMPU,uno);
+  EEPROM.put(addressBarometro,uno);
+  EEPROM.put(addressRTC,uno);
+  EEPROM.put(addressGPS,uno);
+  EEPROM.put(addressMicroSD,uno);
 
-  Serial.println(EEPROM.read(0));
-  Serial.println(EEPROM.read(1));
-  Serial.println(EEPROM.read(2));
-  Serial.println(EEPROM.read(3));
-  Serial.println(EEPROM.read(4));
-  Serial.println(EEPROM.read(5));
-  Serial.println(EEPROM.read(6));
-  Serial.println(EEPROM.read(7));
+  Serial.print("Estado Vuelo             ");
+  Serial.println(EEPROM.read(addressVuelo));
+  Serial.print("Estado MPU               ");
+  Serial.println(EEPROM.read(addressMPU));
+  Serial.print("Estado Barometro         ");
+  Serial.println(EEPROM.read(addressBarometro));
+  Serial.print("Estado RTC               ");
+  Serial.println(EEPROM.read(addressRTC));
+  Serial.print("Estado GPS               ");
+  Serial.println(EEPROM.read(addressGPS));
+  Serial.print("Estado MicroSD           ");
+  Serial.println(EEPROM.read(addressMicroSD));
 }
 
 void loop() {

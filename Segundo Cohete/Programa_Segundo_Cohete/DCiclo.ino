@@ -5,14 +5,12 @@ void loop() {
     archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
       if(archivo){
         while(j<20){
-          //Obteniendo datos raw del magnetometro
-           datosMagnetometro();
           //Leer los datos del MPU
            datosMPU();
           //GPS
          //  datosGPS();      
           //RTC
-            //datosRTC();
+            datosRTC();
           //Escribir en la microSD
             escribirDatos();
             j = j+1;

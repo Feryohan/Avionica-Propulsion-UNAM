@@ -54,12 +54,11 @@
 //-> Aceleración y cada segundo: float (4 bytes)          = 18 - 21
 //-> Aceleración z cada segundo: float (4 bytes)          = 22 - 25
 //-> Altura GPS:  float (4 bytes)                         = 26 - 29
-byte addressVuelo = 0, addressBarometro = 4, addressMPU = 1, addressMagnetometro = 2, addressMicroSD = 3, addressRTC = 5, addressGPS = 6;
+byte addressVuelo = 0, addressMPU = 1, addressBarometro = 2, addressRTC = 3, addressGPS = 4, addressMicroSD = 5;
 
 //--- BIBLIOTECAS ---
 #include <avr/wdt.h>     //Libreria para el watchdog
 #include <Wire.h>        //Libreria para la comunicacion I2C
-#include <HMC5883L.h>    //Libreria para el magnetometro
 #include <MPU6050.h>     //Libreria para el MPU
 #include <RTClib.h>      //Libreria para el manejo del modulo RTC
 #include <SPI.h>         //Libreria interfaz SPI
@@ -72,10 +71,6 @@ byte addressVuelo = 0, addressBarometro = 4, addressMPU = 1, addressMagnetometro
 #define SSpin 10         //Pin Slave Select para el modulo micro SD
 
 //--- VARIABLES ---
-//-> Magnetometro
-HMC5883L magnetometro;
-int16_t mx, my, mz;              //Unidades = 
-
 //-> IMU
 MPU6050lib mpu;
 int16_t accelCount[3];           // Stores the 16-bit signed accelerometer sensor output
@@ -87,13 +82,13 @@ float SelfTest[6];               // Gyro and accelerometer self-test sensor outp
 float aRes, gRes;                // Scale resolutions per LSB for the sensors
 
 //-> RTC
-/*RTC_DS3231 rtc;
+RTC_DS3231 rtc;
 unsigned long tiempo1 = 0;       //Tiempos necesarios para determinar cuando a pasado un segundo
 unsigned long tiempo2 = 0;       //y así tomar la lectura del reloj
 String fecha = "";               //Esta variable concatena el dia/mes/hora:minuto:segundo del reloj  
 String dosPuntos = ":";
 String diagonal = "/";
-*/
+
 //-> Módulo MicroSD
 File archivo;                  //Objeto "archivo" del tipo File
 byte nFile;                    //Numero de archivo
