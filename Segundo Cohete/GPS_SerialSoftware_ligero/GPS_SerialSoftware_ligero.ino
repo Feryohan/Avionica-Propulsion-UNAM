@@ -86,14 +86,14 @@ if(serial.available()){
       if (pos-16<=3)hMSL=+Array[3]*16;
       if (pos-16<=4)hMSL=+Array[3];
     }else if(pos==33){
-      /*Serial.println("");
-      Serial.print("lon=");
-      Serial.print(lon);
-      Serial.print(" lat=");
-      Serial.print(lat);
-      Serial.print(" hMSL=");
-      Serial.println(hMSL);
-      */    
+      serial.println("");
+      serial.print("lon=");
+      serial.print(lon);
+      serial.print(" lat=");
+      serial.print(lat);
+      serial.print(" hMSL=");
+      serial.println(hMSL);
+          
     }
   }
 }

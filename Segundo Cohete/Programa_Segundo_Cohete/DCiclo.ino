@@ -10,18 +10,20 @@ void loop() {
           //Leer los datos del MPU
            datosMPU();
           //GPS
-           datosGPS();      
+         //  datosGPS();      
           //RTC
             //datosRTC();
           //Escribir en la microSD
             escribirDatos();
             j = j+1;
+            wdt_reset();
          }
       }
     archivo.close();
     estadoSensor(1, addressMicroSD);
+    Serial.println("Paquete de datos");
   }
   else{
-    
+    Serial.println("No hay info para guardar");
   }
 }
