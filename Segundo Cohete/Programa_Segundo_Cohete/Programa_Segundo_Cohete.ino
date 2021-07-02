@@ -1,15 +1,15 @@
 //                                    --- CONEXIONES ---
-//   Magnetometro GY-271      IMU GY-521     Modulo MicroSD        RTC            GPS
-//        VCC - 5V             VCC - 5V        GND - GND        SCL - A5       VCC - 5V
-//        GND - GND            GND - GND       VCC - 5V         SDA - A4        RX - D3 TX
-//        SCL - A5             SCL - A5       MISO - D12        VCC - 5V        TX - D5 RX
-//        SDA - A4             SDA - A4       MOSI - D11        GND - GND      GND - GND
+//   Magnetometro GY-271      IMU GY-521     Modulo MicroSD        RTC            GPS               BMP180
+//        VCC - 5V             VCC - 5V        GND - GND        SCL - A5       VCC - 5V            Vin - 5V
+//        GND - GND            GND - GND       VCC - 5V         SDA - A4        RX - D3 TX         GND - GND
+//        SCL - A5             SCL - A5       MISO - D12        VCC - 5V        TX - D5 RX         SCL - A5
+//        SDA - A4             SDA - A4       MOSI - D11        GND - GND      GND - GND           SDA - A4
 //                                             SCK - D13
 //                                              CS - D10
 
 //         ---- Tiempo Watchdog ----
 // MPU necesita más de 1 segundo
-
+// Al parecer el RTC no necesita watchdog ya que no presenta problemas al descomponerse 
 
 //Se obtienen los valores raw de ambos SENSORES con el uso de las librerias que se encuentran en las siguientes páginas:
 //-> https://www.luisllamas.es/brujula-magnetica-con-arduino-compass-digital-hmc5883/
@@ -42,12 +42,13 @@
 //-> RTC       - 0x57 / 0x68
 
 // - - Direcciones de la memoria EEPROM - -
-//-> Estado de vuelo: E (69), A (65), D (68)
-//-> Estado Barómetro: 0 (No funciona), 1 (Funciona)
-//-> Estado Acelerómetro y Giroscopio (MPU):
-//-> Estado Magnetómetro:
-//-> Estado Módulo microSD:
-//-> Estado RTC:
+//   0 -> Estado de vuelo: E (69), A (65), D (68)
+//   1 -> Estado Acelerometro y Giroscopio (MPU6050): 0 (Fallo MPU), 1 (Inicio MPU)
+//   2 -> Datos MPU6050: 0 (Fallo funcion datosMPU, no se pueden leer los datos), 1 (Datos MPU accesibles)
+//   3 -> Estado RTC: 0 (Fallo RTC), 1 (Inicio RTC)
+//   4 -> Datos RTC: 0 (Fallo funcion datosRTC, no se pueden leer los datos), 1 (Datos RTC accesibles)
+//   5 -> Estado Modulo microSD:  0 (Fallo Modulo microSD), 1 (Inicio Modulo microSD)
+//   5 -> Estado Archivo microSD: 0 (Fallo funcion iniciarArchivo, no se puede acceder a la SD), 1 (Se creo el archivo en la SD)
 //-> Estado GPS:
 //-> Altura Barómetro cada segundo: float (4 bytes)       = 10 - 13
 //-> Aceleración x cada segundo: float (4 bytes)          = 14 - 17 
@@ -94,8 +95,7 @@ File archivo;                  //Objeto "archivo" del tipo File
 byte nFile;                    //Numero de archivo
 
 //-> GPS
-/*
-SoftwareSerial serial = SoftwareSerial(3,5);    // Connect the GPS RX/TX to arduino pins 3 and 5
+/*SoftwareSerial serial = SoftwareSerial(3,5);    // Connect the GPS RX/TX to arduino pins 3 and 5
 
 const unsigned char UBX_HEADER[] = { 0xB5, 0x62,0x01, 0x02 };
 uint8_t Array[4]={0x0,0x0,0x0,0x0};

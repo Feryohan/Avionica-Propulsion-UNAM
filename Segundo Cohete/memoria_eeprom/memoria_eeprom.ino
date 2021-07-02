@@ -8,12 +8,12 @@ byte addressVuelo = 0, addressMPU = 1, addressBarometro = 2, addressRTC = 3, add
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  EEPROM.put(addressVuelo,uno);
+/*  EEPROM.put(addressVuelo,uno);
   EEPROM.put(addressMPU,uno);
   EEPROM.put(addressBarometro,uno);
   EEPROM.put(addressRTC,uno);
   EEPROM.put(addressGPS,uno);
-  EEPROM.put(addressMicroSD,uno);
+  EEPROM.put(addressMicroSD,uno);*/
 
   Serial.print("Estado Vuelo             ");
   Serial.println(EEPROM.read(addressVuelo));

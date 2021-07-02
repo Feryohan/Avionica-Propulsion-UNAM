@@ -118,6 +118,12 @@ if(serial.available()){
   }
   else{
     Serial.println("Falló datos MPU");
+    ax = 0;
+    ay = 0;
+    az = 0;
+    gx = 0;
+    gy = 0;
+    gz = 0;
   }
 }
 
@@ -133,6 +139,7 @@ void datosRTC(){
     } 
     else{
       Serial.println("Sin RTC");
+      fecha = "sin fecha";
     }
   }
 }
