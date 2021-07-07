@@ -15,6 +15,7 @@
 //-> https://www.luisllamas.es/brujula-magnetica-con-arduino-compass-digital-hmc5883/
 //-> https://github.com/kriswiner/MPU6050/tree/master/MPU6050Library
 //-> El RTC envía información cada vez que transcurre un segundo
+//-> Register Map del MPU6050: https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf
 
 //- - - Con: MicroSD, GPS, MPU, Magnetometro
 // -> Almacenamiento: 87% (23634 bytes)
@@ -110,6 +111,8 @@ String diagonal = "/";
 //-> Módulo MicroSD
 File archivo;                  //Objeto "archivo" del tipo File
 byte nFile;                    //Numero de archivo
+
+//BMP085
 
 //-> GPS
 /*SoftwareSerial serial = SoftwareSerial(3,5);    // Connect the GPS RX/TX to arduino pins 3 and 5

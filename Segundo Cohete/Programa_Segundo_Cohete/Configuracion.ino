@@ -27,6 +27,8 @@ void setup(){
   delay(5); // simulating a 38400baud pace (or less), otherwise commands are not accepted by the device.
   }*/
 
+  Serial.println("GPS configurado");
+
   //-> RTC
   if(EEPROM.read(estadoRTC) == 1){
     wdt_reset();

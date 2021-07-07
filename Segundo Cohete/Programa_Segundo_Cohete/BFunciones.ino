@@ -57,8 +57,8 @@ void MPUGetData(){
 }
 
 // - - - Ciclo - - -
-
-/*void obtenerDatosGPS(){
+/*
+void obtenerDatosGPS(){
 long lon;     //Longitud deg e-7
 long lat;     //latitude deg e-7
 long hMSL;    // altura Nivel del Mar mm
@@ -105,8 +105,8 @@ if(serial.available()){
     }
   }
  }
-}*/
-
+}
+*/
  void obtenerDatosMPU(){
   if(EEPROM.read(datosMPU) == 1){
     estadoSensor(0, datosMPU);

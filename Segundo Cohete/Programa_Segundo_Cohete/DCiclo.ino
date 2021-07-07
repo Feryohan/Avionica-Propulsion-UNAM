@@ -9,7 +9,7 @@ void loop() {
             //Leer los datos del MPU
              obtenerDatosMPU();
             //GPS
-           //  obtenerDatosGPS();      
+             //obtenerDatosGPS();      
             //RTC
               obtenerDatosRTC();
             //Escribir en la microSD
@@ -17,7 +17,6 @@ void loop() {
               j = j+1;
               wdt_reset();
            }
-           
           estadoSensor(1, registroDatosSD);
         }
       archivo.close();
