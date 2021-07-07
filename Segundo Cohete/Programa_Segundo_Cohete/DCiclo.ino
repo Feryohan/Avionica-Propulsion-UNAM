@@ -1,27 +1,26 @@
 void loop() {
   int j = 0;
-  if(EEPROM.read(addressMicroSD) == 1){
-    estadoSensor(0, addressMicroSD);
-    archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
-      if(archivo){
-        while(j<20){
-          //Leer los datos del MPU
-           datosMPU();
-          //GPS
-         //  datosGPS();      
-          //RTC
-            datosRTC();
-          //Escribir en la microSD
-            escribirDatos();
-            j = j+1;
-            wdt_reset();
-         }
-      }
-    archivo.close();
-    estadoSensor(1, addressMicroSD);
-    Serial.println("Paquete de datos");
-  }
-  else{
-    Serial.println("No hay info para guardar");
+  if(EEPROM.read(estadoModuloSD) == 1 && EEPROM.read(archivoMemoriaSD) == 1){
+    if(EEPROM.read(registroDatosSD) == 1){
+      estadoSensor(0, registroDatosSD);
+      archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
+        if(archivo){
+          while(j<20){
+            //Leer los datos del MPU
+             obtenerDatosMPU();
+            //GPS
+           //  obtenerDatosGPS();      
+            //RTC
+              obtenerDatosRTC();
+            //Escribir en la microSD
+              escribirDatos();
+              j = j+1;
+              wdt_reset();
+           }
+           
+          estadoSensor(1, registroDatosSD);
+        }
+      archivo.close();
+     }
   }
 }

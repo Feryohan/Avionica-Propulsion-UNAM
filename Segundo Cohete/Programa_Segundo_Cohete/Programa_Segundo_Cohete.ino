@@ -43,19 +43,36 @@
 
 // - - Direcciones de la memoria EEPROM - -
 //   0 -> Estado de vuelo: E (69), A (65), D (68)
+      byte estadoVuelo = 0;
 //   1 -> Estado Acelerometro y Giroscopio (MPU6050): 0 (Fallo MPU), 1 (Inicio MPU)
+      byte estadoMPU = 1;
 //   2 -> Datos MPU6050: 0 (Fallo funcion datosMPU, no se pueden leer los datos), 1 (Datos MPU accesibles)
+      byte datosMPU = 2;
 //   3 -> Estado RTC: 0 (Fallo RTC), 1 (Inicio RTC)
+      byte estadoRTC = 3;
 //   4 -> Datos RTC: 0 (Fallo funcion datosRTC, no se pueden leer los datos), 1 (Datos RTC accesibles)
+      byte datosRTC = 4;
 //   5 -> Estado Modulo microSD:  0 (Fallo Modulo microSD), 1 (Inicio Modulo microSD)
-//   5 -> Estado Archivo microSD: 0 (Fallo funcion iniciarArchivo, no se puede acceder a la SD), 1 (Se creo el archivo en la SD)
-//-> Estado GPS:
+      byte estadoModuloSD = 5;
+//   6 -> Estado Archivo microSD: 0 (Fallo funcion iniciarArchivo, no se puede acceder a la SD), 1 (Se creo el archivo en la SD)
+      byte archivoMemoriaSD = 6;
+//   7 -> Registro de datos en archivo microSD: 0 (Fallo el acceso al archivo SD durante el loop), 1 (Se accede al archivo SD sin problemas)
+      byte registroDatosSD = 7;
+//   8 -> Estado Barometro (BMP180): 0 (Fallo BMP180), 1 (Inicio BMP180)
+      byte estadoBMP = 8;
+//   9 -> Datos BMP180: 0 (Fallo funcion datosBMP180, no se pueden leer los datos), 1 (Datos BMP180 accesibles)
+      byte datosBMP = 9;
+//   10 -> Estado GPS: 0 (Fallo GPS), 1 (Inicio GPS)
+      byte estadoGPS = 10;
+//   11 -> Datos GPS: 0 (Fallo funcion datosGPS, no se pueden leer los datos), 1 (Datos GPS accesibles)
+      byte datosGPS = 11;
+
 //-> Altura Barómetro cada segundo: float (4 bytes)       = 10 - 13
 //-> Aceleración x cada segundo: float (4 bytes)          = 14 - 17 
 //-> Aceleración y cada segundo: float (4 bytes)          = 18 - 21
 //-> Aceleración z cada segundo: float (4 bytes)          = 22 - 25
 //-> Altura GPS:  float (4 bytes)                         = 26 - 29
-byte addressVuelo = 0, addressMPU = 1, addressBarometro = 2, addressRTC = 3, addressGPS = 4, addressMicroSD = 5;
+
 
 //--- BIBLIOTECAS ---
 #include <avr/wdt.h>     //Libreria para el watchdog

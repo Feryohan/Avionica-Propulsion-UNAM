@@ -1,5 +1,5 @@
 void estadoSensor(byte estado, byte address){
-    EEPROM.write(address, estado);
+  EEPROM.write(address, estado);
 }
 
 void numeroArchivo(){
@@ -9,13 +9,14 @@ void numeroArchivo(){
 }
 
 void iniciarArchivo(){
+  estadoSensor(0, archivoMemoriaSD);
   archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
     if(archivo){
       //Si el archivo se crea correctamente
       archivo.println("AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Latitud,Longitud,Altitud,Hora");
       archivo.close();
       //wdt_reset();
-      estadoSensor(1, addressMicroSD);
+      estadoSensor(1, archivoMemoriaSD);
       Serial.println("Archivo creado");
     }
     else{
@@ -30,10 +31,6 @@ void MPUSelfTest(){
   if(SelfTest[0] < 1.0f && SelfTest[1] < 1.0f && SelfTest[2] < 1.0f && SelfTest[3] < 1.0f && SelfTest[4] < 1.0f && SelfTest[5] < 1.0f) {
     mpu.calibrateMPU6050(gyroBias, accelBias);   // Calibrate gyro and accelerometers, load biases in bias registers  
     mpu.initMPU6050();                           // Initialize device for active mode read of acclerometer and gyroscope
-    }
-  else
-    {
-      //
     }
 }
 
@@ -61,7 +58,7 @@ void MPUGetData(){
 
 // - - - Ciclo - - -
 
-/*void datosGPS(){
+/*void obtenerDatosGPS(){
 long lon;     //Longitud deg e-7
 long lat;     //latitude deg e-7
 long hMSL;    // altura Nivel del Mar mm
@@ -110,14 +107,14 @@ if(serial.available()){
  }
 }*/
 
- void datosMPU(){
-  if(EEPROM.read(addressMPU) == 1){
-    estadoSensor(0, addressMPU);
+ void obtenerDatosMPU(){
+  if(EEPROM.read(datosMPU) == 1){
+    estadoSensor(0, datosMPU);
     MPUGetData();
-    estadoSensor(1, addressMPU);
+    estadoSensor(1, datosMPU);
   }
   else{
-    Serial.println("Falló datos MPU");
+    Serial.println("Fallo datos MPU");
     ax = 0;
     ay = 0;
     az = 0;
@@ -127,15 +124,15 @@ if(serial.available()){
   }
 }
 
-void datosRTC(){
+void obtenerDatosRTC(){
   tiempo2 = millis();
   if(tiempo2 > (tiempo1+1000)){
     tiempo1 = millis();
-    if(EEPROM.read(addressRTC) == 1){
-      estadoSensor(0,addressRTC);
+    if(EEPROM.read(datosRTC) == 1){
+      estadoSensor(0,datosRTC);
       DateTime dia = rtc.now();
       fecha = dia.day() + diagonal + dia.month() + diagonal + dia.hour() + dosPuntos + dia.minute() + dosPuntos + dia.second();
-      estadoSensor(1,addressRTC);
+      estadoSensor(1,datosRTC);
     } 
     else{
       Serial.println("Sin RTC");

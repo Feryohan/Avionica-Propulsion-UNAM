@@ -1,19 +1,20 @@
-void setup() {
+void setup(){
   wdt_disable();
   Serial.begin(9600);
   Wire.begin();
-  Serial.println("Setup.. Esperemos 5 segunods para dar tiempo a cargar un nuevo sketch");
+  Serial.println("Setup.. Esperemos 5 segundos para dar tiempo a cargar un nuevo sketch");
   delay(5000); // espero 5 segundos, para dar tiempo a cargar un nuevo sketch.
   Serial.println("Arduino iniciado");
-  wdt_enable(WDTO_4S);
+  wdt_enable(WDTO_2S);
   
   // - - Configuración - -
   
   //-> MPU
-  if(EEPROM.read(addressMPU) == 1){
-    estadoSensor(0, addressMPU);
+  if(EEPROM.read(estadoMPU) == 1){
+    estadoSensor(1, datosMPU);
+    estadoSensor(0, estadoMPU);
     MPUSelfTest();                             //Diagnostico y calibración del MPU
-    estadoSensor(1, addressMPU);
+    estadoSensor(1, estadoMPU);
     Serial.println("Inicio MPU");
   }
   else{
@@ -27,12 +28,13 @@ void setup() {
   }*/
 
   //-> RTC
-  if(EEPROM.read(addressRTC) == 1){
+  if(EEPROM.read(estadoRTC) == 1){
     wdt_reset();
-    estadoSensor(0, addressRTC);
+    estadoSensor(1, datosRTC);
+    estadoSensor(0, estadoRTC);
     rtc.adjust(DateTime(__DATE__, __TIME__));  //Obtener fecha actual
     Serial.println("RTC configurado");
-    estadoSensor(1, addressRTC);
+    estadoSensor(1, estadoRTC);
   }
   else{
     Serial.println("RTC ignorado");
@@ -40,9 +42,11 @@ void setup() {
   }
   
   //-> Módulo MicroSD
-  if(EEPROM.read(addressMicroSD) == 1){
-    estadoSensor(0, addressMicroSD);
+  if(EEPROM.read(estadoModuloSD) == 1){
+    estadoSensor(1, registroDatosSD);
+    estadoSensor(0, estadoModuloSD);
     if(SD.begin(SSpin)){
+      estadoSensor(1, estadoModuloSD);
       Serial.println("Inicio Modulo");
       //->Leer y actualizar el numero de archivo
       numeroArchivo();
