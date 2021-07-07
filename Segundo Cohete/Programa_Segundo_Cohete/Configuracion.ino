@@ -13,12 +13,14 @@ void setup(){
   if(EEPROM.read(estadoMPU) == 1){
     estadoSensor(1, datosMPU);
     estadoSensor(0, estadoMPU);
-    MPUSelfTest();                             //Diagnostico y calibración del MPU
+    //Estableciendo Bandwidth y Frecuencia de muestreo
+    wireConfiguration(MPU6050_ADDRESS,CONFIG,DLPF_CFG);
+    //Estableciendo la escala completa del giroscopio
+    wireConfiguration(MPU6050_ADDRESS,GYRO_CONFIG,FS_SEL);
+    //Estableciendo la escala completa del acelerometro
+    wireConfiguration(MPU6050_ADDRESS,ACCEL_CONFIG,AFS_SEL);
+    Serial.println("MPU configurada");
     estadoSensor(1, estadoMPU);
-    Serial.println("Inicio MPU");
-  }
-  else{
-    Serial.println("Fallo MPU");
   }
 
   //-> GPS

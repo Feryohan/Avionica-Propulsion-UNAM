@@ -78,7 +78,6 @@
 //--- BIBLIOTECAS ---
 #include <avr/wdt.h>     //Libreria para el watchdog
 #include <Wire.h>        //Libreria para la comunicacion I2C
-#include <MPU6050.h>     //Libreria para el MPU
 #include <RTClib.h>      //Libreria para el manejo del modulo RTC
 #include <SPI.h>         //Libreria interfaz SPI
 #include <SD.h>          //Libreria para tarjetas SD
@@ -90,15 +89,46 @@
 #define SSpin 10         //Pin Slave Select para el modulo micro SD
 
 //--- VARIABLES ---
-//-> IMU
-MPU6050lib mpu;
-int16_t accelCount[3];           // Stores the 16-bit signed accelerometer sensor output
-float ax, ay, az;                // Unidades = G's
-int16_t gyroCount[3];            // Stores the 16-bit signed gyro sensor output
-float gx, gy, gz;                // Unidades = grados por segundo
-float gyroBias[3], accelBias[3]; // Bias corrections for gyro and accelerometer
-float SelfTest[6];               // Gyro and accelerometer self-test sensor output
-float aRes, gRes;                // Scale resolutions per LSB for the sensors
+//-> MPU
+#define MPU6050_ADDRESS 0x69        //Direccion del MPU cuando A0 recibe voltaje
+//Si no recibe voltaje, la dirección seria 0x68 pero esto entra en conflicto con el RTC
+//Acelerometro
+#define CONFIG          0x1A       //Gyroscope Output Rate = 8kHz when the DLPF is disabled (DLPF_CFG = 0 or 7), and 1kHz
+#define DLPF_CFG        0x00       //when the DLPF is enabled (see Register 26).
+                                   //Pagina 12: Note: The accelerometer output rate is 1kHz
+//Accelerometro -> Bandwidth(260 Hz), Delay(0 ms), Frecuencia de muestreo (1kHz)
+//Giroscopio -> Bandwidth(256 Hz), Delay(0.98 ms), Frecuencia de muestreo (8kHz)
+
+#define GYRO_CONFIG   0x1B        //Pagina 14
+#define FS_SEL        0x18        //Se escoge la escala completa del giroscopio
+                                  //la cual es de +-2000 º/s, mandando bit4: 1, bit3: 1
+#define ACCEL_CONFIG  0x1C        //Pagina 15
+#define AFS_SEL       0x18        //Se escoge la escala completa del acelerometro
+                                  //la cual es de +-16 g, mandando bit4: 1, bit3: 1
+
+
+#define ACCEL_XOUT_H  0x3B
+#define ACCEL_XOUT_L  0x3C
+#define ACCEL_YOUT_H  0x3D
+#define ACCEL_YOUT_L  0x3E
+#define ACCEL_ZOUT_H  0x3F
+#define ACCEL_ZOUT_L  0x40
+//Giroscopio
+#define GYRO_XOUT_H   0x43
+#define GYRO_XOUT_L   0x44
+#define GYRO_YOUT_H   0x45
+#define GYRO_YOUT_L   0x46
+#define GYRO_ZOUT_H   0x47
+#define GYRO_ZOUT_L   0x48
+
+float aceleracionX,aceleracionY,aceleracionZ;
+//output value from -1 to +1, Gravity acceleration acting on the X-Axis
+//2^8 bytes
+float AceleracionXBytes = 256;
+        //--------L3G4200D---------
+float giroscopioX,giroscopioY,giroscopioZ;
+// From the datasheet: 70 mdps/digit
+float dpsXDigit = 0.07;      //Angular rate [dps]
 
 //-> RTC
 RTC_DS3231 rtc;

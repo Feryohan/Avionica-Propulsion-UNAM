@@ -1,3 +1,31 @@
+void wireConfiguration(int dispositivo, int direccion, int valor)
+{
+  Wire.beginTransmission(dispositivo);
+  Wire.write(direccion);
+  Wire.endTransmission();
+  Wire.requestFrom(dispositivo,1);
+  int DataFormat_data = Wire.read();            //Guardamos el valor por default
+  DataFormat_data |= valor;                     //Activamos el valor que ingresamos, manteniendo los demás valores iniciales
+  wireTransmission(dispositivo,direccion,DataFormat_data); 
+}
+
+void wireTransmission(int dispositivo,int registro0,int registro1)
+{
+  Wire.beginTransmission(dispositivo);
+  Wire.write(registro0);              
+  Wire.write(registro1); 
+  Wire.endTransmission();
+  Wire.requestFrom(dispositivo,2);
+}
+
+void wireTransmissionSimple(int dispositivo,int registro)
+{
+  Wire.beginTransmission(dispositivo);
+  Wire.write(registro);    
+  Wire.endTransmission();
+  Wire.requestFrom(dispositivo,1);
+}
+
 void estadoSensor(byte estado, byte address){
   EEPROM.write(address, estado);
 }
@@ -26,34 +54,50 @@ void iniciarArchivo(){
 
 //- - - Configuración - - -
 
-void MPUSelfTest(){
-  mpu.MPU6050SelfTest(SelfTest); // Start by performing self test and reporting values
-  if(SelfTest[0] < 1.0f && SelfTest[1] < 1.0f && SelfTest[2] < 1.0f && SelfTest[3] < 1.0f && SelfTest[4] < 1.0f && SelfTest[5] < 1.0f) {
-    mpu.calibrateMPU6050(gyroBias, accelBias);   // Calibrate gyro and accelerometers, load biases in bias registers  
-    mpu.initMPU6050();                           // Initialize device for active mode read of acclerometer and gyroscope
-    }
+//Cálculo de los valores del acelerometro
+float calculoAceleracion(int dispositivo,int registro0,int registro1){
+  float aceleracion = 0;
+  wireTransmission(dispositivo,registro0,registro1);
+  if(Wire.available()<=2){
+    int raw0 = Wire.read();
+    int raw1 = Wire.read();
+    raw1 = raw1<<8;
+    int raw_out = raw0 + raw1;
+    aceleracion = raw_out/AceleracionXBytes;
+  }
+  return aceleracion;
 }
 
-void MPUGetData(){
-  // If data ready bit set, all data registers have new data
-  if(mpu.readByte(MPU6050_ADDRESS, INT_STATUS) & 0x01) {  // check if data ready interrupt
+void valoresAcelerometro(){
+  aceleracionX = calculoAceleracion(MPU6050_ADDRESS,ACCEL_XOUT_H,ACCEL_XOUT_L);
+  aceleracionY = calculoAceleracion(MPU6050_ADDRESS,ACCEL_YOUT_H,ACCEL_YOUT_L);
+  aceleracionZ = calculoAceleracion(MPU6050_ADDRESS,ACCEL_ZOUT_H,ACCEL_ZOUT_L);
+}
 
-    mpu.readAccelData(accelCount);  // Read the x/y/z adc values
-    aRes=mpu.getAres();
-    
-    // Now we'll calculate the accleration value into actual g's
-    ax = (float)accelCount[0]*aRes - accelBias[0];  // get actual g value, this depends on scale being set
-    ay = (float)accelCount[1]*aRes - accelBias[1];   
-    az = (float)accelCount[2]*aRes - accelBias[2];  
-   
-    mpu.readGyroData(gyroCount);  // Read the x/y/z adc values
-    gRes=mpu.getGres();
- 
-    // Calculate the gyro value into actual degrees per second
-    gx = (float)gyroCount[0]*gRes - gyroBias[0];  // get actual gyro value, this depends on scale being set
-    gy = (float)gyroCount[1]*gRes - gyroBias[1];  
-    gz = (float)gyroCount[2]*gRes - gyroBias[2];   
-   }  
+
+float calculoGiroscopio(int dispositivo,int registro0,int registro1){
+  float giroscopio = 0;
+  int raw0,raw1;
+  wireTransmissionSimple(dispositivo,registro0);
+  if(Wire.available()<=1)   
+  {
+    raw0 = Wire.read();
+  }
+  wireTransmissionSimple(dispositivo,registro1);
+  if(Wire.available()<=1)   
+  {
+    raw1 = Wire.read();
+  }
+  // Raw Data
+  raw1 = raw1<<8;
+  int raw_out = raw0 + raw1;
+  giroscopio = raw_out*dpsXDigit;
+}
+
+void valoresGiroscopio(){
+  giroscopioX = calculoGiroscopio(MPU6050_ADDRESS,GYRO_XOUT_H,GYRO_XOUT_L);
+  giroscopioY = calculoGiroscopio(MPU6050_ADDRESS,GYRO_YOUT_H,GYRO_YOUT_L);
+  giroscopioZ = calculoGiroscopio(MPU6050_ADDRESS,GYRO_ZOUT_H,GYRO_ZOUT_L);
 }
 
 // - - - Ciclo - - -
@@ -107,22 +151,7 @@ if(serial.available()){
  }
 }
 */
- void obtenerDatosMPU(){
-  if(EEPROM.read(datosMPU) == 1){
-    estadoSensor(0, datosMPU);
-    MPUGetData();
-    estadoSensor(1, datosMPU);
-  }
-  else{
-    Serial.println("Fallo datos MPU");
-    ax = 0;
-    ay = 0;
-    az = 0;
-    gx = 0;
-    gy = 0;
-    gz = 0;
-  }
-}
+
 
 void obtenerDatosRTC(){
   tiempo2 = millis();
@@ -142,7 +171,7 @@ void obtenerDatosRTC(){
 }
 
 void escribirDatos(){
-  archivo.print(1000*ax);
+/*  archivo.print(1000*ax);
   archivo.print(",");
   archivo.print(1000*ay);
   archivo.print(",");
@@ -153,7 +182,7 @@ void escribirDatos(){
   archivo.print(gy,1);
   archivo.print(",");
   archivo.print(gz,1);
-  archivo.print(",");
+  archivo.print(",");*/
   archivo.print("latitud");
   archivo.print(",");
   archivo.print("longitude");
