@@ -69,9 +69,13 @@ float calculoAceleracion(int dispositivo,int registro0,int registro1){
 }
 
 void valoresAcelerometro(){
-  aceleracionX = calculoAceleracion(MPU6050_ADDRESS,ACCEL_XOUT_H,ACCEL_XOUT_L);
-  aceleracionY = calculoAceleracion(MPU6050_ADDRESS,ACCEL_YOUT_H,ACCEL_YOUT_L);
-  aceleracionZ = calculoAceleracion(MPU6050_ADDRESS,ACCEL_ZOUT_H,ACCEL_ZOUT_L);
+  if(EEPROM.read(datosAcelerometro) == 1){
+    estadoSensor(0, datosAcelerometro);
+    aceleracionX = calculoAceleracion(MPU6050_ADDRESS,ACCEL_XOUT_H,ACCEL_XOUT_L);
+    aceleracionY = calculoAceleracion(MPU6050_ADDRESS,ACCEL_YOUT_H,ACCEL_YOUT_L);
+    aceleracionZ = calculoAceleracion(MPU6050_ADDRESS,ACCEL_ZOUT_H,ACCEL_ZOUT_L);
+    estadoSensor(1, datosAcelerometro);
+  }
 }
 
 
@@ -95,9 +99,13 @@ float calculoGiroscopio(int dispositivo,int registro0,int registro1){
 }
 
 void valoresGiroscopio(){
-  giroscopioX = calculoGiroscopio(MPU6050_ADDRESS,GYRO_XOUT_H,GYRO_XOUT_L);
-  giroscopioY = calculoGiroscopio(MPU6050_ADDRESS,GYRO_YOUT_H,GYRO_YOUT_L);
-  giroscopioZ = calculoGiroscopio(MPU6050_ADDRESS,GYRO_ZOUT_H,GYRO_ZOUT_L);
+  if(EEPROM.read(datosGiroscopio) == 1){
+    estadoSensor(0, datosGiroscopio);
+    giroscopioX = calculoGiroscopio(MPU6050_ADDRESS,GYRO_XOUT_H,GYRO_XOUT_L);
+    giroscopioY = calculoGiroscopio(MPU6050_ADDRESS,GYRO_YOUT_H,GYRO_YOUT_L);
+    giroscopioZ = calculoGiroscopio(MPU6050_ADDRESS,GYRO_ZOUT_H,GYRO_ZOUT_L);
+    estadoSensor(1, datosGiroscopio);
+  }
 }
 
 // - - - Ciclo - - -
@@ -171,18 +179,18 @@ void obtenerDatosRTC(){
 }
 
 void escribirDatos(){
-/*  archivo.print(1000*ax);
+  archivo.print(aceleracionX);
   archivo.print(",");
-  archivo.print(1000*ay);
+  archivo.print(aceleracionY);
   archivo.print(",");
-  archivo.print(1000*az);
+  archivo.print(aceleracionZ);
   archivo.print(",");
-  archivo.print(gx,1);
+  archivo.print(giroscopioX);
   archivo.print(",");
-  archivo.print(gy,1);
+  archivo.print(giroscopioY);
   archivo.print(",");
-  archivo.print(gz,1);
-  archivo.print(",");*/
+  archivo.print(giroscopioZ);
+  archivo.print(",");
   archivo.print("latitud");
   archivo.print(",");
   archivo.print("longitude");

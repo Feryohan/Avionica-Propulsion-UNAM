@@ -47,26 +47,28 @@
       byte estadoVuelo = 0;
 //   1 -> Estado Acelerometro y Giroscopio (MPU6050): 0 (Fallo MPU), 1 (Inicio MPU)
       byte estadoMPU = 1;
-//   2 -> Datos MPU6050: 0 (Fallo funcion datosMPU, no se pueden leer los datos), 1 (Datos MPU accesibles)
-      byte datosMPU = 2;
-//   3 -> Estado RTC: 0 (Fallo RTC), 1 (Inicio RTC)
-      byte estadoRTC = 3;
-//   4 -> Datos RTC: 0 (Fallo funcion datosRTC, no se pueden leer los datos), 1 (Datos RTC accesibles)
-      byte datosRTC = 4;
-//   5 -> Estado Modulo microSD:  0 (Fallo Modulo microSD), 1 (Inicio Modulo microSD)
-      byte estadoModuloSD = 5;
-//   6 -> Estado Archivo microSD: 0 (Fallo funcion iniciarArchivo, no se puede acceder a la SD), 1 (Se creo el archivo en la SD)
-      byte archivoMemoriaSD = 6;
-//   7 -> Registro de datos en archivo microSD: 0 (Fallo el acceso al archivo SD durante el loop), 1 (Se accede al archivo SD sin problemas)
-      byte registroDatosSD = 7;
-//   8 -> Estado Barometro (BMP180): 0 (Fallo BMP180), 1 (Inicio BMP180)
-      byte estadoBMP = 8;
-//   9 -> Datos BMP180: 0 (Fallo funcion datosBMP180, no se pueden leer los datos), 1 (Datos BMP180 accesibles)
-      byte datosBMP = 9;
-//   10 -> Estado GPS: 0 (Fallo GPS), 1 (Inicio GPS)
-      byte estadoGPS = 10;
-//   11 -> Datos GPS: 0 (Fallo funcion datosGPS, no se pueden leer los datos), 1 (Datos GPS accesibles)
-      byte datosGPS = 11;
+//   2 -> Datos Acelerometro de la MPU6050: 0 (Fallo funcion obtenerDatosAcelerometro, no se pueden leer los datos), 1 (Datos Acelerometro accesibles)
+      byte datosAcelerometro = 2;      
+//   3 -> Datos Giroscopio de la MPU6050: 0 (Fallo funcion obtenerDatosGiroscopio, no se pueden leer los datos), 1 (Datos Giroscopio accesibles)
+      byte datosGiroscopio = 3;
+//   4 -> Estado RTC: 0 (Fallo RTC), 1 (Inicio RTC)
+      byte estadoRTC = 4;
+//   5 -> Datos RTC: 0 (Fallo funcion obtenerDatosRTC, no se pueden leer los datos), 1 (Datos RTC accesibles)
+      byte datosRTC = 5;
+//   6 -> Estado Modulo microSD:  0 (Fallo Modulo microSD), 1 (Inicio Modulo microSD)
+      byte estadoModuloSD = 6;
+//   7 -> Estado Archivo microSD: 0 (Fallo funcion iniciarArchivo, no se puede acceder a la SD), 1 (Se creo el archivo en la SD)
+      byte archivoMemoriaSD = 7;
+//   8 -> Registro de datos en archivo microSD: 0 (Fallo el acceso al archivo SD durante el loop), 1 (Se accede al archivo SD sin problemas)
+      byte registroDatosSD = 8;
+//   9 -> Estado Barometro (BMP180): 0 (Fallo BMP180), 1 (Inicio BMP180)
+      byte estadoBMP = 9;
+//   10 -> Datos BMP180: 0 (Fallo funcion datosBMP180, no se pueden leer los datos), 1 (Datos BMP180 accesibles)
+      byte datosBMP = 10;
+//   11 -> Estado GPS: 0 (Fallo GPS), 1 (Inicio GPS)
+      byte estadoGPS = 11;
+//   12 -> Datos GPS: 0 (Fallo funcion datosGPS, no se pueden leer los datos), 1 (Datos GPS accesibles)
+      byte datosGPS = 12;
 
 //-> Altura Barómetro cada segundo: float (4 bytes)       = 10 - 13
 //-> Aceleración x cada segundo: float (4 bytes)          = 14 - 17 

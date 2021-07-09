@@ -7,7 +7,8 @@ void loop() {
         if(archivo){
           while(j<20){
             //Leer los datos del MPU
-//             obtenerDatosMPU();
+            valoresGiroscopio();
+            valoresAcelerometro();
             //GPS
              //obtenerDatosGPS();      
             //RTC
