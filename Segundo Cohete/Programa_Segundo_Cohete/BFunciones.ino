@@ -1,15 +1,3 @@
-void valoresDefaultMPU(){
-  Wire.beginTransmission(0x69);
-  Wire.write(0x6B); //PWR_MGMT_1
-  Wire.write(0); //Despierta al MPU6050
-  Wire.endTransmission();
-
-  Wire.beginTransmission(0x69);
-  Wire.write(0x6B); //PWR_MGMT_1
-  Wire.write(0x80);
-  Wire.endTransmission();
-}
-
 void estadoSensor(byte estado, byte address){
   EEPROM.write(address, estado);
 }
@@ -28,11 +16,7 @@ void iniciarArchivo(){
       archivo.println("AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Latitud,Longitud,Altitud,Hora");
       archivo.close();
       //wdt_reset();
-      estadoSensor(1, archivoMemoriaSD);
-      Serial.println("Archivo creado");
-    }
-    else{
-      Serial.println("Archivo NO creado");  
+      estadoSensor(1, archivoMemoriaSD); 
     }
 }
 
@@ -70,7 +54,7 @@ void MPUGetData(){
 
 // - - - Ciclo - - -
 
-/*void obtenerDatosGPS(){
+void obtenerDatosGPS(){
 if(serial.available()){
   //Revisar que 
   Array[0]=Array[1];
@@ -101,19 +85,11 @@ if(serial.available()){
       if (pos-16<=2)hMSL=+Array[3]*16*16;
       if (pos-16<=3)hMSL=+Array[3]*16;
       if (pos-16<=4)hMSL=+Array[3];
-    }else if(pos==33){
-      Serial.println("");
-      Serial.print("lon=");
-      Serial.print(lon);
-      Serial.print(" lat=");
-      Serial.print(lat);
-      Serial.print(" hMSL=");
-      Serial.println(hMSL);
     }
   }
  }
 }
-*/
+
  void obtenerDatosMPU(){
   if(EEPROM.read(datosMPU) == 1){
     estadoSensor(0, datosMPU);
@@ -121,7 +97,6 @@ if(serial.available()){
     estadoSensor(1, datosMPU);
   }
   else{
-    Serial.println("Fallo datos MPU");
     ax = 0;
     ay = 0;
     az = 0;
@@ -159,13 +134,12 @@ void escribirDatos(){
   archivo.print(",");
   archivo.print(gy,1);
   archivo.print(",");
-  archivo.println(gz,1);
-/*  archivo.print(",");
+  archivo.print(gz,1);
+  archivo.print(",");
   archivo.print(lat);
   archivo.print(",");
   archivo.print(lon);
   archivo.print(",");
   archivo.println(hMSL);
-  */
   //archivo.println(fecha);
 }
