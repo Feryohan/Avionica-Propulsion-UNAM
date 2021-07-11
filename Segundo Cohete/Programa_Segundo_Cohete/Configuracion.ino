@@ -16,11 +16,8 @@ void setup(){
   wdt_reset();
 
   //-> GPS
-  serial.begin(9600);
-  for(int i = 0; i < sizeof(UBLOX_INIT); i++) {                        
-  serial.write( pgm_read_byte(UBLOX_INIT+i) );
-  delay(5); // simulating a 38400baud pace (or less), otherwise commands are not accepted by the device.
-  }
+    DEBUG_PORT.begin(9600);
+    gpsPort.begin(9600);
 
   //BMP180
   if(EEPROM.read(estadoBMP) == 1){

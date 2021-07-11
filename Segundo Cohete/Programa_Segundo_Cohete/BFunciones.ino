@@ -88,39 +88,7 @@ void obtenerDatosBMP(){
 }
 
 void obtenerDatosGPS(){
-if(serial.available()){
-  //Revisar que 
-  Array[0]=Array[1];
-  Array[1]=Array[2];
-  Array[2]=Array[3];
-  Array[3]=serial.read();
-
-  //Serial.print(Array[3], HEX);
-  //Serial.print(" ");
-  //Revisar header de la trama, para indicar que incio el mensaje
-  if(Array[0]==UBX_HEADER[0] && Array[1]==UBX_HEADER[1] && Array[2]==UBX_HEADER[2] && Array[3]==UBX_HEADER[3]){
-    pos=1;
-    lon=0;lat=0;hMSL=0;
-  }else{
-    pos++;  
-          if (pos<=8 && 4<pos){     //Bytes del 5 al 8
-      if (pos-4<=1)lon=+Array[3]*16*16*16;
-      if (pos-4<=2)lon=+Array[3]*16*16;
-      if (pos-4<=3)lon=+Array[3]*16;
-      if (pos-4<=4)lon=+Array[3];
-    }else if (pos<=12 && 8<pos){  //Bytes del 9 al 12
-      if (pos-8<=1)lat=+Array[3]*16*16*16;
-      if (pos-8<=2)lat=+Array[3]*16*16;
-      if (pos-8<=3)lat=+Array[3]*16;
-      if (pos-8<=4)lat=+Array[3];
-    }else if (pos<=20 && 16<pos){ //Bytes del 17 al 20
-      if (pos-16<=1)hMSL=+Array[3]*16*16*16;
-      if (pos-16<=2)hMSL=+Array[3]*16*16;
-      if (pos-16<=3)hMSL=+Array[3]*16;
-      if (pos-16<=4)hMSL=+Array[3];
-    }
-  }
- }
+    fix = gps.read();
 }
 
  void obtenerDatosMPU(){
@@ -175,10 +143,10 @@ void escribirDatos(){
   archivo.print(",");
   archivo.print(gz,1);
   archivo.print(",");
-  archivo.print(lat);
+  archivo.print(fix.latitude(), 6);
   archivo.print(",");
-  archivo.print(lon);
+  archivo.print(fix.longitude(), 6);
   archivo.print(",");
-  archivo.println(hMSL);
+  archivo.println(fix.altitude());
   //archivo.println(fecha);
 }
