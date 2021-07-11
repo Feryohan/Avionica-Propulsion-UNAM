@@ -3,13 +3,13 @@
 //Este programa coloca las siguientes posiciones de la memoria EEPROM
 //en uno 
 
-char letra;
+char entradaUsuario;
 
 // - - Direcciones de la memoria EEPROM - -
 //   0 -> Estado de vuelo: E (69), A (65), D (68)
       byte estadoVuelo = 0;
-//   1 -> Estado Acelerometro y Giroscopio (MPU6050): 0 (Fallo MPU), 1 (Inicio MPU)
-      byte estadoMPU = 1;
+//   21 -> Estado Acelerometro y Giroscopio (MPU6050): 0 (Fallo MPU), 1 (Inicio MPU)
+      byte estadoMPU = 21;
 //   2 -> Datos MPU6050: 0 (Fallo funcion datosMPU, no se pueden leer los datos), 1 (Datos MPU accesibles)
       byte datosMPU = 2;
 //   3 -> Estado RTC: 0 (Fallo RTC), 1 (Inicio RTC)
@@ -86,13 +86,13 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
     if(Serial.available()>0){
-      letra = Serial.read();
-      if(letra == 'Y' || letra == 'y'){
+      entradaUsuario = Serial.read();
+      if(entradaUsuario == 'Y' || entradaUsuario == 'y'){
         restaurarMemoria();
         Serial.println("La memoria se ha restaurado");
         leerMemoria();
       }
-      if(letra == 'N' || letra == 'n'){
+      if(entradaUsuario == 'N' || entradaUsuario == 'n'){
         Serial.println("Los valores no se han modificado");
       }
       else{

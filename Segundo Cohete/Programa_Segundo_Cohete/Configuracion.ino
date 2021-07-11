@@ -1,16 +1,19 @@
 void setup(){
   wdt_disable();
   Serial.begin(9600);
+  wdt_enable(WDTO_2S);
   Wire.begin();
   Serial.println("Arduino iniciado");
-  wdt_enable(WDTO_2S);
   
   // - - Configuración - -
   
   //-> MPU
   if(EEPROM.read(estadoMPU) == 1){
+    Serial.println("datosMPU = 1");
     estadoSensor(1, datosMPU);
+    Serial.println("estadoMPU = 0");
     estadoSensor(0, estadoMPU);
+    wdt_reset();
     MPUSelfTest();                             //Diagnostico y calibración del MPU
     estadoSensor(1, estadoMPU);
     Serial.println("Inicio MPU");
