@@ -79,7 +79,10 @@
 #include <avr/wdt.h>     //Libreria para el watchdog
 #include <Wire.h>        //Libreria para la comunicacion I2C
 #include <MPU6050.h>     //Libreria para el MPU
-//#include <RTClib.h>      //Libreria para el manejo del modulo RTC
+#include <SFE_BMP180.h>  //Libreria para el Barometro 180
+//#include <NMEAGPS.h>
+//#include <GPSport.h>     //Librerias para el GPS
+//#include <RTClib.h>    //Libreria para el manejo del modulo RTC
 #include <SPI.h>         //Libreria interfaz SPI
 #include <SD.h>          //Libreria para tarjetas SD
 #include <EEPROM.h>      //Libreria que permite guardar valores cuando el arduino se apaga            
@@ -112,7 +115,16 @@ String diagonal = "/";
 File archivo;                  //Objeto "archivo" del tipo File
 byte nFile;                    //Numero de archivo
 
-//BMP085
+//-> BMP085
+SFE_BMP180 bmp180;
+int status;
+double T,P;
+float Po = 101325;             //Presión al nivel del mar [Pa]
+float M = 0.02896;             //Masa molar del aire [kg/mol]
+float TempK;                   //Temperatura en grados kelvin
+float R = 8.3143;              //Constante universal de los gases [(N*m)/(mol*K)]
+float g = 9.807;               //Aceleración gravitacional [m/s^2]
+float altura;
 
 //-> GPS
 SoftwareSerial serial = SoftwareSerial(3,5);    // Connect the GPS RX/TX to arduino pins 3 and 5

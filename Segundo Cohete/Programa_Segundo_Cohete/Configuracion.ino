@@ -22,6 +22,17 @@ void setup(){
   delay(5); // simulating a 38400baud pace (or less), otherwise commands are not accepted by the device.
   }
 
+  //BMP180
+  if(EEPROM.read(estadoBMP) == 1){
+    estadoSensor(1,datosBMP);
+    estadoSensor(0,estadoBMP);
+    if(!bmp180.begin())
+    {
+      while(1);
+    }
+    estadoSensor(1,estadoBMP);
+  }
+
   //-> RTC
   /*if(EEPROM.read(estadoRTC) == 1){
     wdt_reset();

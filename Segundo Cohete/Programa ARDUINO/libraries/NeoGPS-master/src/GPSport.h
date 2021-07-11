@@ -221,7 +221,7 @@
 
   // Default Arduino RX pin number that is connected to the GPS TX pin
   #ifndef RX_PIN
-    #define RX_PIN 4
+    #define RX_PIN 5
   #endif
 
   // Default Arduino TX pin number that is connected to the GPS RX pin

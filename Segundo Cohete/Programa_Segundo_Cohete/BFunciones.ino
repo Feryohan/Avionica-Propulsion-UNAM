@@ -13,7 +13,7 @@ void iniciarArchivo(){
   archivo = SD.open("Datos"+String(nFile)+".txt",FILE_WRITE);
     if(archivo){
       //Si el archivo se crea correctamente
-      archivo.println("AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Latitud,Longitud,Altitud,Hora");
+      archivo.println("Temp,Pres,Alt,AcelX,AcelY,AcelZ,GyroX,GyroY,GyroZ,Latitud,Longitud,Altitud,Hora");
       archivo.close();
       //wdt_reset();
       estadoSensor(1, archivoMemoriaSD); 
@@ -53,6 +53,39 @@ void MPUGetData(){
 }
 
 // - - - Ciclo - - -
+
+void altitud(double pressure, double temperature){
+  TempK = temperature + 273.15;       //Calcular altitud en [m]
+  altura = (log(pressure/Po))*((R*TempK)/(M*g))*-1;
+}
+
+void obtenerDatosBMP(){
+  if(EEPROM.read(datosBMP) == 1){
+    estadoSensor(0, datosBMP);
+    status = bmp180.startTemperature();
+  if (status != 0)
+  {   
+    delay(status);
+    status = bmp180.getTemperature(T);
+     
+    if (status != 0)
+    {
+      status = bmp180.startPressure(3);
+      if (status != 0)
+      {     
+        delay(status);       
+        status = bmp180.getPressure(P,T); 
+        P = P*100;
+        if (status != 0)
+        {                  
+              altitud(P,T);  
+        }      
+      }      
+    }   
+  } 
+    estadoSensor(1, datosBMP);
+  }
+}
 
 void obtenerDatosGPS(){
 if(serial.available()){
@@ -124,6 +157,12 @@ if(serial.available()){
 }
 */
 void escribirDatos(){
+  archivo.print(T);
+  archivo.print(",");
+  archivo.print(P);
+  archivo.print(",");
+  archivo.print(altura);
+  archivo.print(",");
   archivo.print(1000*ax);
   archivo.print(",");
   archivo.print(1000*ay);

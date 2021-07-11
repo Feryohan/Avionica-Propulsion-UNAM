@@ -6,7 +6,7 @@
 File myFile;
 
 #define SSpin 10         //Pin Slave Select para el modulo micro SD
-byte nFile = 98;         //¿Que archivo vamos a abrir?
+byte nFile = 99;         //¿Que archivo vamos a abrir?
 
 void setup() {
   Serial.begin(9600);
