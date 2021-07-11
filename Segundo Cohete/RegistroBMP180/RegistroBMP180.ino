@@ -1,16 +1,21 @@
-#include <EEPROM.h>
-#include <SD.h>
 #include <SFE_BMP180.h>
 #include <Wire.h>
-#define LEDR 3
-#define chipSelect 4
+#define chipSelect 10
 
 SFE_BMP180 bmp180;
-File Datos;
 int status;
 double T,P;
-int i,nFile;
-int t0;
+float Po = 101325;             //Presión al nivel del mar [Pa]
+float M = 0.02896;             //Masa molar del aire [kg/mol]
+float TempK;                   //Temperatura en grados kelvin
+float R = 8.3143;              //Constante universal de los gases [(N*m)/(mol*K)]
+float g = 9.807;               //Aceleración gravitacional [m/s^2]
+float altura;
+
+float altitud(double pressure, double temperature){
+  TempK = temperature + 273.15;       //Calcular altitud en [m]
+  altura = (log(pressure/Po))*((R*TempK)/(M*g))*-1;
+}
 
 void setup()
 {
@@ -20,28 +25,9 @@ void setup()
     Serial.println("Error en sensor de presión");
     while(1); // bucle infinito
   }
+  Serial.println("Continuamos");
   
-  if (!SD.begin(chipSelect)) {
-    Serial.println("Error en memoria SD");
-    while(1);
-  }
-  nFile = EEPROM.read(0);
-  EEPROM.write(0,nFile+1);//Tenemos un maximo de 255 archivos
-  nFile = EEPROM.read(0);
-  Datos = SD.open("Prueba" + String(nFile) + ".csv",FILE_WRITE);
-  
-  if (Datos) {
-    i = 0;
-    Datos.println("Numero,Tiempo_ms,Temperatura_C,Presion_Pa");
-    Datos.close();
-    digitalWrite(LEDR,LOW);
-    Serial.println("Listo archivo!");  
-  } 
-  else 
-  {
-    while(1);
-  }
-  t0 = millis();
+  Serial.println("Temperatura_C,Presion_Pa,Altura");
 }
 
 void loop()
@@ -49,51 +35,27 @@ void loop()
   status = bmp180.startTemperature();
   if (status != 0)
   {   
-    Serial.print("Delay temperatura: "); 
-    Serial.println(status); 
     delay(status);
-    
     status = bmp180.getTemperature(T);
      
     if (status != 0)
     {
       status = bmp180.startPressure(3);
       if (status != 0)
-      { 
-        Serial.print("Delay Presion: "); 
-        Serial.println(status);        
+      {     
         delay(status);       
         status = bmp180.getPressure(P,T); 
         P = P*100;
         if (status != 0)
         {                  
-          Datos = SD.open("Prueba" + String(nFile) + ".csv",FILE_WRITE);
-            
-          if(Datos)
-          {
-              i++;
-              Datos.print(i);
-              Datos.print(",");
-              Datos.print(millis());
-              Datos.print(",");
-              Datos.print(T);
-              Datos.print(",");
-              Datos.println(P);
-              Datos.close();
-          }
-          else
-          {
-            Serial.println("ERROR ------- X"); 
-          }
-                  
+              altitud(P,T);
+              Serial.print(T);
+              Serial.print(",");
+              Serial.print(P);
+              Serial.print(",");
+              Serial.println(altura);         
         }      
       }      
     }   
   } 
-  if(millis()-t0 >= 59000)
-  {
-    digitalWrite(LEDR, HIGH);
-    Serial.println("Fin de la ejecución");
-    while(1){}
-  }
 }
