@@ -1,10 +1,11 @@
 void setup(){
   wdt_disable();
   Serial.begin(9600);
+  delay(5000);
   wdt_enable(WDTO_2S);
   Wire.begin();
   Serial.println("Arduino iniciado");
-  
+  valoresDefaultMPU();
   // - - Configuración - -
   
   //-> MPU
@@ -24,11 +25,11 @@ void setup(){
   wdt_reset();
 
   //-> GPS
-  serial.begin(9600);
+ /* serial.begin(9600);
   for(int i = 0; i < sizeof(UBLOX_INIT); i++) {                        
   serial.write( pgm_read_byte(UBLOX_INIT+i) );
   delay(5); // simulating a 38400baud pace (or less), otherwise commands are not accepted by the device.
-  }
+  }*/
 
   //Serial.println("GPS configurado");
 

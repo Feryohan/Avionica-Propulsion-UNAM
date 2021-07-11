@@ -1,3 +1,15 @@
+void valoresDefaultMPU(){
+  Wire.beginTransmission(0x69);
+  Wire.write(0x6B); //PWR_MGMT_1
+  Wire.write(0); //Despierta al MPU6050
+  Wire.endTransmission();
+
+  Wire.beginTransmission(0x69);
+  Wire.write(0x6B); //PWR_MGMT_1
+  Wire.write(0x80);
+  Wire.endTransmission();
+}
+
 void estadoSensor(byte estado, byte address){
   EEPROM.write(address, estado);
 }
@@ -58,7 +70,7 @@ void MPUGetData(){
 
 // - - - Ciclo - - -
 
-void obtenerDatosGPS(){
+/*void obtenerDatosGPS(){
 if(serial.available()){
   //Revisar que 
   Array[0]=Array[1];
@@ -101,7 +113,7 @@ if(serial.available()){
   }
  }
 }
-
+*/
  void obtenerDatosMPU(){
   if(EEPROM.read(datosMPU) == 1){
     estadoSensor(0, datosMPU);
@@ -147,12 +159,13 @@ void escribirDatos(){
   archivo.print(",");
   archivo.print(gy,1);
   archivo.print(",");
-  archivo.print(gz,1);
-  archivo.print(",");
+  archivo.println(gz,1);
+/*  archivo.print(",");
   archivo.print(lat);
   archivo.print(",");
   archivo.print(lon);
   archivo.print(",");
   archivo.println(hMSL);
+  */
   //archivo.println(fecha);
 }
