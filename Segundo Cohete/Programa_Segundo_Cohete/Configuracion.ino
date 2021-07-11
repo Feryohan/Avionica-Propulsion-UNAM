@@ -2,8 +2,6 @@ void setup(){
   wdt_disable();
   Serial.begin(9600);
   Wire.begin();
-  Serial.println("Setup.. Esperemos 5 segundos para dar tiempo a cargar un nuevo sketch");
-  delay(5000); // espero 5 segundos, para dar tiempo a cargar un nuevo sketch.
   Serial.println("Arduino iniciado");
   wdt_enable(WDTO_2S);
   
@@ -20,17 +18,19 @@ void setup(){
   else{
     Serial.println("Fallo MPU");
   }
+  wdt_reset();
 
   //-> GPS
- /* for(int i = 0; i < sizeof(UBLOX_INIT); i++) {                        
+  serial.begin(9600);
+  for(int i = 0; i < sizeof(UBLOX_INIT); i++) {                        
   serial.write( pgm_read_byte(UBLOX_INIT+i) );
   delay(5); // simulating a 38400baud pace (or less), otherwise commands are not accepted by the device.
-  }*/
+  }
 
-  Serial.println("GPS configurado");
+  //Serial.println("GPS configurado");
 
   //-> RTC
-  if(EEPROM.read(estadoRTC) == 1){
+  /*if(EEPROM.read(estadoRTC) == 1){
     wdt_reset();
     estadoSensor(1, datosRTC);
     estadoSensor(0, estadoRTC);
@@ -41,7 +41,7 @@ void setup(){
   else{
     Serial.println("RTC ignorado");
     //wdt_reset();
-  }
+  }*/
   
   //-> Módulo MicroSD
   if(EEPROM.read(estadoModuloSD) == 1){
@@ -61,8 +61,8 @@ void setup(){
     }
   }
   else{
-    Serial.println("Ignoro microSD");
+    Serial.println("Ignoro Modulo MicroSD");
   }
   wdt_reset();
-  tiempo1 = millis();
+//  tiempo1 = millis();
 }

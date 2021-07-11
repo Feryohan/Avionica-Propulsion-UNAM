@@ -57,12 +57,8 @@ void MPUGetData(){
 }
 
 // - - - Ciclo - - -
-/*
-void obtenerDatosGPS(){
-long lon;     //Longitud deg e-7
-long lat;     //latitude deg e-7
-long hMSL;    // altura Nivel del Mar mm
 
+void obtenerDatosGPS(){
 if(serial.available()){
   //Revisar que 
   Array[0]=Array[1];
@@ -94,19 +90,18 @@ if(serial.available()){
       if (pos-16<=3)hMSL=+Array[3]*16;
       if (pos-16<=4)hMSL=+Array[3];
     }else if(pos==33){
-      serial.println("");
-      serial.print("lon=");
-      serial.print(lon);
-      serial.print(" lat=");
-      serial.print(lat);
-      serial.print(" hMSL=");
-      serial.println(hMSL);
-          
+      Serial.println("");
+      Serial.print("lon=");
+      Serial.print(lon);
+      Serial.print(" lat=");
+      Serial.print(lat);
+      Serial.print(" hMSL=");
+      Serial.println(hMSL);
     }
   }
  }
 }
-*/
+
  void obtenerDatosMPU(){
   if(EEPROM.read(datosMPU) == 1){
     estadoSensor(0, datosMPU);
@@ -124,7 +119,7 @@ if(serial.available()){
   }
 }
 
-void obtenerDatosRTC(){
+/*void obtenerDatosRTC(){
   tiempo2 = millis();
   if(tiempo2 > (tiempo1+1000)){
     tiempo1 = millis();
@@ -140,7 +135,7 @@ void obtenerDatosRTC(){
     }
   }
 }
-
+*/
 void escribirDatos(){
   archivo.print(1000*ax);
   archivo.print(",");
@@ -154,11 +149,10 @@ void escribirDatos(){
   archivo.print(",");
   archivo.print(gz,1);
   archivo.print(",");
-  archivo.print("latitud");
+  archivo.print(lat);
   archivo.print(",");
-  archivo.print("longitude");
+  archivo.print(lon);
   archivo.print(",");
-  archivo.print("altitude");
-  archivo.print(",");
-  archivo.println(fecha);
+  archivo.println(hMSL);
+  //archivo.println(fecha);
 }

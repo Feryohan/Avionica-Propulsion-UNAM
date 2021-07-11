@@ -79,7 +79,7 @@
 #include <avr/wdt.h>     //Libreria para el watchdog
 #include <Wire.h>        //Libreria para la comunicacion I2C
 #include <MPU6050.h>     //Libreria para el MPU
-#include <RTClib.h>      //Libreria para el manejo del modulo RTC
+//#include <RTClib.h>      //Libreria para el manejo del modulo RTC
 #include <SPI.h>         //Libreria interfaz SPI
 #include <SD.h>          //Libreria para tarjetas SD
 #include <EEPROM.h>      //Libreria que permite guardar valores cuando el arduino se apaga            
@@ -101,13 +101,13 @@ float SelfTest[6];               // Gyro and accelerometer self-test sensor outp
 float aRes, gRes;                // Scale resolutions per LSB for the sensors
 
 //-> RTC
-RTC_DS3231 rtc;
+/*RTC_DS3231 rtc;
 unsigned long tiempo1 = 0;       //Tiempos necesarios para determinar cuando a pasado un segundo
 unsigned long tiempo2 = 0;       //y así tomar la lectura del reloj
 String fecha = "";               //Esta variable concatena el dia/mes/hora:minuto:segundo del reloj  
 String dosPuntos = ":";
 String diagonal = "/";
-
+*/
 //-> Módulo MicroSD
 File archivo;                  //Objeto "archivo" del tipo File
 byte nFile;                    //Numero de archivo
@@ -115,7 +115,11 @@ byte nFile;                    //Numero de archivo
 //BMP085
 
 //-> GPS
-/*SoftwareSerial serial = SoftwareSerial(3,5);    // Connect the GPS RX/TX to arduino pins 3 and 5
+SoftwareSerial serial = SoftwareSerial(3,5);    // Connect the GPS RX/TX to arduino pins 3 and 5
+
+long lon;     //Longitud deg e-7
+long lat;     //latitude deg e-7
+long hMSL;    // altura Nivel del Mar mm
 
 const unsigned char UBX_HEADER[] = { 0xB5, 0x62,0x01, 0x02 };
 uint8_t Array[4]={0x0,0x0,0x0,0x0};
@@ -144,4 +148,4 @@ const char UBLOX_INIT[] PROGMEM = {
   //0xB5,0x62,0x06,0x08,0x06,0x00,0x64,0x00,0x01,0x00,0x01,0x00,0x7A,0x12, //(10Hz)
   0xB5,0x62,0x06,0x08,0x06,0x00,0xC8,0x00,0x01,0x00,0x01,0x00,0xDE,0x6A, //(5Hz)
   //0xB5,0x62,0x06,0x08,0x06,0x00,0xE8,0x03,0x01,0x00,0x01,0x00,0x01,0x39, //(1Hz)
-};*/
+};
