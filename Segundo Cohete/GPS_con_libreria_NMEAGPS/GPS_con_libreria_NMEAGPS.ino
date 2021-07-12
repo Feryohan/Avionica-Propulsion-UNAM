@@ -1,5 +1,7 @@
 #include <NMEAGPS.h>
-
+double altitudDato;
+double longitudDato;
+double latitudDato;
 //======================================================================
 //  Program: NMEAsimple.ino
 //
@@ -55,18 +57,17 @@ void loop()
 {
   while (gps.available( gpsPort )) {
     fix = gps.read();
-
-    DEBUG_PORT.print( F("Location: ") );
     if (fix.valid.location) {
-      DEBUG_PORT.print( fix.latitude(), 6 );
-      DEBUG_PORT.print( ',' );
-      DEBUG_PORT.print( fix.longitude(), 6 );
+      latitudDato = fix.latitude();
+      longitudDato = fix.longitude();
     }
-
-    DEBUG_PORT.print( F(", Altitude: ") );
-    if (fix.valid.altitude)
-      DEBUG_PORT.print( fix.altitude() );
-
-    DEBUG_PORT.println();
+    if (fix.valid.altitude){
+      altitudDato = fix.altitude();
+    }
   }
+  DEBUG_PORT.print((latitudDato),6);
+  DEBUG_PORT.print("+");
+  DEBUG_PORT.print((longitudDato),6);
+  DEBUG_PORT.print("+");
+  DEBUG_PORT.println(altitudDato);
 }

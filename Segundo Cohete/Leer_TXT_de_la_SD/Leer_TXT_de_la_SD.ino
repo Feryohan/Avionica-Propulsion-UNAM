@@ -1,4 +1,4 @@
-/*Este archivo lee la información del archivo TXT que deseemos abrir*/
+//Este archivo lee la información del archivo TXT que deseemos abrir
 
 #include <SPI.h>
 #include <SD.h>
@@ -6,8 +6,9 @@
 File myFile;
 
 #define SSpin 10         //Pin Slave Select para el modulo micro SD
-byte nFile = 102;         //¿Que archivo vamos a abrir?
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+byte nFile = 114;         //¿Que archivo vamos a abrir?//////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 void setup() {
   Serial.begin(9600);
   while (!Serial) {

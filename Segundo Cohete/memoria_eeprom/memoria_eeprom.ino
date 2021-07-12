@@ -8,8 +8,8 @@ char entradaUsuario;
 // - - Direcciones de la memoria EEPROM - -
 //   0 -> Estado de vuelo: E (69), A (65), D (68)
       byte estadoVuelo = 0;
-//   21 -> Estado Acelerometro y Giroscopio (MPU6050): 0 (Fallo MPU), 1 (Inicio MPU)
-      byte estadoMPU = 21;
+//   1 -> Estado Acelerometro y Giroscopio (MPU6050): 0 (Fallo MPU), 1 (Inicio MPU)
+      byte estadoMPU = 1;
 //   2 -> Datos MPU6050: 0 (Fallo funcion datosMPU, no se pueden leer los datos), 1 (Datos MPU accesibles)
       byte datosMPU = 2;
 //   3 -> Estado RTC: 0 (Fallo RTC), 1 (Inicio RTC)
