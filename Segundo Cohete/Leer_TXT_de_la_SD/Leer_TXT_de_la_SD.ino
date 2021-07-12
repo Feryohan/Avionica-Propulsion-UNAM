@@ -7,20 +7,18 @@ File myFile;
 
 #define SSpin 10         //Pin Slave Select para el modulo micro SD
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-byte nFile = 114;         //¿Que archivo vamos a abrir?//////////////////////////////////////////////////
+int nFile = 2;         //¿Que archivo vamos a abrir?//////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void setup() {
   Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
-  
   if (!SD.begin(SSpin)) {
     Serial.println("Error: No hay comunicacion con el moduloSD");
+    Serial.println("Error: El programa dejara de ejecutarse, por favor verifica la conexion con el modulo");
     while (1);
   }
   
-  myFile = SD.open("Datos"+String(nFile)+".txt");
+  myFile = SD.open("GPS"+String(nFile)+".txt");
   if (myFile) {
     Serial.println("Información obtenida del archivo: Datos"+String(nFile)+".txt");
     while (myFile.available()) {
@@ -33,5 +31,4 @@ void setup() {
 }
 
 void loop() {
-  // nothing happens after setup
 }

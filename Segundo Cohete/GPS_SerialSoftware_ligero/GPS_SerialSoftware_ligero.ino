@@ -6,9 +6,17 @@ unicamente la coordenadas, longitud, latitud, altitud respecto al nivel del mar
 aun se puede configurar a 10Hz, se puede obtener el tiempo de la semana, asi com el numero de satelites,
 Incertidumbre, etc
 */
+#include <SPI.h>         //Libreria interfaz SPI
+#include <SD.h>          //Libreria para tarjetas SD
+
+File archivo;                  //Objeto "archivo" del tipo File
+byte nFile = 2;                    //Numero de archivo
+#define SSpin 10         //Pin Slave Select para el modulo micro SD
+
 #include <SoftwareSerial.h>
 // Connect the GPS RX/TX to arduino pins 3 and 5
 SoftwareSerial serial = SoftwareSerial(3,5);
+
 
 const unsigned char UBX_HEADER[] = { 0xB5, 0x62,0x01, 0x02 };
 uint8_t Array[4]={0x0,0x0,0x0,0x0};
@@ -39,23 +47,13 @@ const char UBLOX_INIT[] PROGMEM = {
   //0xB5,0x62,0x06,0x08,0x06,0x00,0xE8,0x03,0x01,0x00,0x01,0x00,0x01,0x39, //(1Hz)
 };
 
-void setup() {
-  // put your setup code here, to run once:
-  //Serial.begin(9600);
-  serial.begin(9600);
-  for(int i = 0; i < sizeof(UBLOX_INIT); i++) {                        
-  serial.write( pgm_read_byte(UBLOX_INIT+i) );
-  delay(5); // simulating a 38400baud pace (or less), otherwise commands are not accepted by the device.
-  }
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-long lon;     //Longitud deg e-7
-long lat;     //latitude deg e-7
-long hMSL;    // altura Nivel del Mar mm
-
+void datosGPS(){
+  
 if(serial.available()){
+  
+  long lon;     //Longitud deg e-7
+  long lat;     //latitude deg e-7
+  long hMSL;    // altura Nivel del Mar mm
   //Revisar que 
   Array[0]=Array[1];
   Array[1]=Array[2];
@@ -93,8 +91,41 @@ if(serial.available()){
       serial.print(lat);
       serial.print(" hMSL=");
       serial.println(hMSL);
-          
+     
     }
   }
+   archivo = SD.open("GPS"+String(nFile)+".txt",FILE_WRITE);
+    if(archivo){
+      archivo.print(lat);
+      archivo.print(",");
+      archivo.print(lon);
+       archivo.print(",");
+      archivo.println(hMSL);
+    }
+    archivo.close();
 }
+}
+
+void setup() {
+  // put your setup code here, to run once:
+  //Serial.begin(9600);
+  serial.begin(9600);
+  for(int i = 0; i < sizeof(UBLOX_INIT); i++) {                        
+  serial.write( pgm_read_byte(UBLOX_INIT+i) );
+  delay(5); // simulating a 38400baud pace (or less), otherwise commands are not accepted by the device.
+  }
+
+  if(SD.begin(SSpin)){
+    archivo = SD.open("GPS"+String(nFile)+".txt",FILE_WRITE);
+    if(archivo){
+      //Si el archivo se crea correctamente
+      archivo.println("Datos GPS");
+    }
+   archivo.close();
+   }
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  datosGPS();
 }
