@@ -1,6 +1,6 @@
 void setup(){
   wdt_disable();
-  delay(5000);
+ // delay(5000);
   wdt_enable(WDTO_1S);
   Wire.begin();
   //                                  --- Calibración ---
@@ -10,7 +10,7 @@ void setup(){
   {
     estadoSensor(1, datosMPU);
     estadoSensor(0, estadoMPU);
-    MPUConfiguracion();                     //Diagnostico y calibración del MPU
+    MPUinit();                     //Diagnostico y calibración del MPU
     estadoSensor(1, estadoMPU);
   }
   wdt_reset();
