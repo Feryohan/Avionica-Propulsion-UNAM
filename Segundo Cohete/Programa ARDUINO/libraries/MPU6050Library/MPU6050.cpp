@@ -1,6 +1,6 @@
 #include "MPU6050.h"
-int Gscale = GFS_250DPS;
-int Ascale = AFS_2G;
+int Gscale = GFS_2000DPS;
+int Ascale = AFS_16G;
 
 float MPU6050lib::getGres() {
   switch (Gscale)
@@ -62,14 +62,6 @@ void MPU6050lib::readGyroData(int16_t * destination)
   destination[1] = (int16_t)((rawData[2] << 8) | rawData[3]) ;
   destination[2] = (int16_t)((rawData[4] << 8) | rawData[5]) ;
 }
-
-int16_t MPU6050lib::readTempData()
-{
-  uint8_t rawData[2];  // x/y/z gyro register data stored here
-  readBytes(MPU6050_ADDRESS, TEMP_OUT_H, 2, &rawData[0]);  // Read the two raw data registers sequentially into data array
-  return ((int16_t)rawData[0]) << 8 | rawData[1] ;  // Turn the MSB and LSB into a 16-bit value
-}
-
 
 
 // Configure the motion detection control for low power accelerometer mode
@@ -138,8 +130,8 @@ void MPU6050lib::initMPU6050()
   // Disable FSYNC and set accelerometer and gyro bandwidth to 44 and 42 Hz, respectively;
   // DLPF_CFG = bits 2:0 = 010; this sets the sample rate at 1 kHz for both
   // Maximum delay time is 4.9 ms corresponding to just over 200 Hz sample rate
-  writeByte(MPU6050_ADDRESS, CONFIG, 0x03);
-
+  writeByte(MPU6050_ADDRESS, CONFIG, 0x06);
+//-> LO MODIFIQUE DE 03 A 06, PERMITIENDO UNA FRECUENCIA DE 5Hz y un delay de 19ms
   // Set sample rate = gyroscope output rate/(1 + SMPLRT_DIV)
   writeByte(MPU6050_ADDRESS, SMPLRT_DIV, 0x04);  // Use a 200 Hz rate; the same rate set in CONFIG above
 

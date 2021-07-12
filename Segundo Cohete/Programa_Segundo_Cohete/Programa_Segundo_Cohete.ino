@@ -86,9 +86,10 @@ int16_t accelCount[3];           // Stores the 16-bit signed accelerometer senso
 float ax, ay, az;                // Unidades = G's
 int16_t gyroCount[3];            // Stores the 16-bit signed gyro sensor output
 float gx, gy, gz;                // Unidades = grados por segundo
-float gyroBias[3], accelBias[3]; // Bias corrections for gyro and accelerometer
-float SelfTest[6];               // Gyro and accelerometer self-test sensor output
-float aRes, gRes;                // Scale resolutions per LSB for the sensors
+//float gyroBias[3], accelBias[3]; // Bias corrections for gyro and accelerometer
+//float SelfTest[6];             // Gyro and accelerometer self-test sensor output
+float aRes = 0.48828125;         //(16g/32768)*(1000)
+float gRes = 0.06103515;         //2000/32768
 
 //--> RTC <--
 /*RTC_DS3231 rtc;

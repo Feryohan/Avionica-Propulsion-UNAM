@@ -10,8 +10,7 @@ void setup(){
   {
     estadoSensor(1, datosMPU);
     estadoSensor(0, estadoMPU);
-    wdt_reset();
-    MPUSelfTest();                     //Diagnostico y calibración del MPU
+    MPUConfiguracion();                     //Diagnostico y calibración del MPU
     estadoSensor(1, estadoMPU);
   }
   wdt_reset();

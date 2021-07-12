@@ -13,14 +13,14 @@ enum Ascale {
   AFS_2G = 0,
   AFS_4G,
   AFS_8G,
-  AFS_16G
+  AFS_16G = 3 
 };
 
 enum Gscale {
   GFS_250DPS = 0,
   GFS_500DPS,
   GFS_1000DPS,
-  GFS_2000DPS
+  GFS_2000DPS = 3
 };
 
 #define XGOFFS_TC        0x00 // Bit 7 PWR_MODE, bits 6:1 XG_OFFS_TC, bit 0 OTP_BNK_VLD

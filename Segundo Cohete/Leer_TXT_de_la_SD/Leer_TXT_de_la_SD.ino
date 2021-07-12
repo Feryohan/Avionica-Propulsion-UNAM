@@ -7,7 +7,7 @@ File myFile;
 
 #define SSpin 10         //Pin Slave Select para el modulo micro SD
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-int nFile = 2;         //¿Que archivo vamos a abrir?//////////////////////////////////////////////////
+int nFile = 117;         //¿Que archivo vamos a abrir?//////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void setup() {
@@ -18,7 +18,7 @@ void setup() {
     while (1);
   }
   
-  myFile = SD.open("GPS"+String(nFile)+".txt");
+  myFile = SD.open("Datos"+String(nFile)+".txt");
   if (myFile) {
     Serial.println("Información obtenida del archivo: Datos"+String(nFile)+".txt");
     while (myFile.available()) {
