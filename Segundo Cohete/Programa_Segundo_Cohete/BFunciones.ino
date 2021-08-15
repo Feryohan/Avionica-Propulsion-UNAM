@@ -38,9 +38,9 @@ void MPUinit(){
 }
 //--> Módulo MicroSD <--
 void numeroArchivo(){
-  nFile = EEPROM.read(500);          //Usamos la dirección 500 de la EEPROM
-  EEPROM.write(500,nFile+1);         //Tenemos un máximo de 255 archivos
-  nFile = EEPROM.read(500);
+  nFile = EEPROM.read(direccFile);          //Usamos la dirección especificada en direccFile
+  EEPROM.write(direccFile,nFile+1);         //Tenemos un máximo de 255 archivos, después, el conteo se reinicia en cero
+  nFile = EEPROM.read(direccFile);
 }
 void iniciarArchivo(){
   estadoSensor(0, archivoMemoriaSD);
@@ -153,7 +153,7 @@ void obtenerDatosBMP()
 //--> RTC <--
 void obtenerDatosRTC(){
   tiempo2 = millis();
-  if(tiempo2 > (tiempo1+1000)){
+  if(tiempo2 > (tiempo1+1000)){     //Esta Instrucción se ejecuta cada segundo
     tiempo1 = millis();
     if(EEPROM.read(datosRTC) == 1){
       estadoSensor(0,datosRTC);
@@ -163,6 +163,8 @@ void obtenerDatosRTC(){
     } 
   }
 }
+
+
 
 //                                  --- Guardar Datos ---
 void escribirDatos(){

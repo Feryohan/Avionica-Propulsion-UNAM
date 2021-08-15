@@ -27,9 +27,21 @@
 // -> Almacenamiento: 44% (13516 bytes)
 // -> Dinamica: 55% (1126 bytes)
 
-//                                       --- Uso de Memoria ---
+//                                    --- Direcciones de los sensores ---
 //-> MPU6050   - 0x69 (Con una alimentación de 3.3 V en el pin AD0)
 //-> BMP180    - 0x77
+
+//                                  --- Librerías ---
+#include <avr/wdt.h>     //Libreria para el watchdog
+#include <Wire.h>        //Libreria para la comunicacion I2C
+#include <SFE_BMP180.h>  //Libreria para el Barometro 180
+//#include <NMEAGPS.h>     //Libreria para el GPS
+//#include <GPSport.h>     //Libreria para el GPS
+#include <SPI.h>         //Libreria interfaz SPI
+#include <SD.h>          //Libreria para tarjetas SD
+#include <EEPROM.h>      //Libreria que permite guardar valores cuando el arduino se apaga            
+#include <RTClib.h>    //Libreria para el manejo del modulo RTC
+
 
 //                              --- Direcciones de la memoria EEPROM ---
 //   0 -> Estado de vuelo: E (69), A (65), D (68)
@@ -56,24 +68,19 @@
       byte estadoGPS = 10;
 //   11 -> Datos GPS: 0 (Fallo funcion obtenerDatosGPS, no se pueden leer los datos), 1 (Datos GPS accesibles)
       byte datosGPS = 11;
+//   20 -> Seguro: 0 (desconectado), 1 (conectado)
+     byte direccSeguro = 20;     
 
-//-> Altura Barómetro cada segundo: float (4 bytes)       = 10 - 13
-//-> Aceleración x cada segundo: float (4 bytes)          = 14 - 17 
-//-> Aceleración y cada segundo: float (4 bytes)          = 18 - 21
-//-> Aceleración z cada segundo: float (4 bytes)          = 22 - 25
-//-> Altura GPS:  float (4 bytes)                         = 26 - 29
-
-
-//                                  --- Bibliotecas ---
-#include <avr/wdt.h>     //Libreria para el watchdog
-#include <Wire.h>        //Libreria para la comunicacion I2C
-#include <SFE_BMP180.h>  //Libreria para el Barometro 180
-//#include <NMEAGPS.h>     //Libreria para el GPS
-//#include <GPSport.h>     //Libreria para el GPS
-#include <SPI.h>         //Libreria interfaz SPI
-#include <SD.h>          //Libreria para tarjetas SD
-#include <EEPROM.h>      //Libreria que permite guardar valores cuando el arduino se apaga            
-#include <RTClib.h>    //Libreria para el manejo del modulo RTC
+//   80 -> Direccion de archivo: De esta dirección se secan los numeros para los archivos "Datos#.txt"
+     byte direccFile = 80;       
+//   150 -> Direccion de AltTerr_EEPROM
+     byte direcc_AltTerr_EEPROM = 150;
+//   250 -> Direccion de Altura_Maxima_EEPROM
+     byte direcc_Alt_Max_EEPROM = 250;           
+//   350 -> Direccion de Acc_const_XYZ;
+     byte direcc_Acc_const_XYZ = 350;
+//   450 -> Direccion de Tiempo_Ascenso_EEPROM;
+     byte direcc_Tiempo_Ascenso_EEPROM = 450;     
 
 //                                  --- Definiciones ---
 #define SSpin 10         //Pin Slave Select para el modulo micro SD
@@ -93,8 +100,7 @@ float Altura_Maxima_EEPROM;
 float AltTerr_EEPROM = 2300;         //metros sobre el nivel del mar en el lugar que nos encontremos
 boolean Seguro = true;               //True = Conectado; False = Desconectado
 float Acc_const_XYZ;               
-float Tiempo_Ascenso_EEPROM = 8;     //Tiempo estimado (en segundos) para alcanzar el apogeo una vez que el cohete ha despegado
-
+byte Tiempo_Ascenso_EEPROM = 8;     //Tiempo estimado (en segundos) para alcanzar el apogeo una vez que el cohete ha despegado
 
 //                                  --- Variables ---
 //--> MPU <--
