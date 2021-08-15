@@ -3,7 +3,7 @@ void loop() {
   obtenerDatosMPU();
   obtenerDatosBMP();
   //obtenerDatosGPS();
-  //obtenerDatosRTC();
+  obtenerDatosRTC();
   //                                   --- Guardar Datos ---
   if(EEPROM.read(estadoModuloSD) == 1 && EEPROM.read(archivoMemoriaSD) == 1 && EEPROM.read(registroDatosSD) == 1)
   {

@@ -73,7 +73,7 @@
 #include <SPI.h>         //Libreria interfaz SPI
 #include <SD.h>          //Libreria para tarjetas SD
 #include <EEPROM.h>      //Libreria que permite guardar valores cuando el arduino se apaga            
-//#include <RTClib.h>    //Libreria para el manejo del modulo RTC
+#include <RTClib.h>    //Libreria para el manejo del modulo RTC
 
 //                                  --- Definiciones ---
 #define SSpin 10         //Pin Slave Select para el modulo micro SD
@@ -130,13 +130,13 @@ float gx, gy, gz;
 #define GYRO_ZOUT_L   0x48
 
 //--> RTC <--
-/*RTC_DS3231 rtc;
+RTC_DS3231 rtc;
 unsigned long tiempo1 = 0;       //Tiempos necesarios para determinar cuando a pasado un segundo
 unsigned long tiempo2 = 0;       //y así tomar la lectura del reloj
 String fecha = "";               //Esta variable concatena el dia/mes/hora:minuto:segundo del reloj  
 String dosPuntos = ":";
 String diagonal = "/";
-*/
+
 
 //--> Módulo MicroSD <--
 File archivo;                  //Objeto "archivo" del tipo File

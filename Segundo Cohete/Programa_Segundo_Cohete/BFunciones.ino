@@ -151,7 +151,7 @@ void obtenerDatosBMP()
 }
 */
 //--> RTC <--
-/*void obtenerDatosRTC(){
+void obtenerDatosRTC(){
   tiempo2 = millis();
   if(tiempo2 > (tiempo1+1000)){
     tiempo1 = millis();
@@ -163,7 +163,6 @@ void obtenerDatosBMP()
     } 
   }
 }
-*/
 
 //                                  --- Guardar Datos ---
 void escribirDatos(){
@@ -190,5 +189,5 @@ void escribirDatos(){
   archivo.print((longitudDato),6);
   archivo.print(",");
   archivo.println(altitudDato);*/
-  //archivo.println(fecha);
+  archivo.println(fecha);
 }
