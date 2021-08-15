@@ -1,0 +1,88 @@
+******************* Polar Satellite Launch Vehicle ***************************
+
+- lanzador orbital indio de tercera generación
+- propulsado por combustible sólido
+- desarrollado por ISRO Indian Space Research Organisation
+- a finales de los años 1980 y principios de los años 1990.
+- Se han lanzado 12 PSLV, con una tasa de éxito del 91,67 %.
+
+Medidas:
+Altura	44 m
+Diámetro	2,8 m
+Masa	294 000 kg
+Etapas	4
+
+
+Capacidades: 
+Carga útil a LEO	3250 kg
+Carga útil a HCO	1600 kg1​
+Carga útil a OTG	1060 kg1​
+
+Propulsores
+Nº de Propulsores	6
+Motores	1 sólido
+Empuje	502,6 kN
+Impulso específico	262 s
+Tiempo de quemado	44 segundos
+Propelente	HTPB (sólido)
+
+Primera etapa
+Motores	1 sólido
+Empuje	4860 kN
+Impulso específico	269 s
+Tiempo de quemado	105 segundos
+Propelente	HTPB (sólido)
+Segunda etapa
+Motores	1 Vikas
+Empuje	725 kN
+Impulso específico	293 s
+Tiempo de quemado	158 segundos
+Propelente	N2O4/UDMH
+Tercera etapa
+Motores	1 sólido
+Empuje	328 kN
+Impulso específico	294 s
+Tiempo de quemado	83 segundos
+Propelente	HTPB (sólido)
+Cuarta etapa
+Motores	2 líquidos
+Empuje	14 kN
+Impulso específico	308 s
+Tiempo de quemado	425 segundos
+Propelente	MMH/UDMH
+
+
+*********************** Long March 2C *********************************
+- Chinese orbital launch vehicle
+- Developed and manufactured by the China Academy of Launch Vehicle Technology (CALT)
+- first launch on 9 September 1982
+- two-stage launch vehicle with storable propellant:  Nitrogen Tetroxide and Unsymmetrical Dimethylhydrazine. 
+
+Size
+Height	42 m (138 ft) [1]
+Diameter	3.35 m (11.0 ft) [1]
+Mass	233,000 kg (514,000 lb)
+Stages	2
+
+Thrust	2,961.6 kN
+
+Payload to LEO
+Mass	3,850 kg (8,490 lb)
+Payload to SSO
+Mass	2C: 1,400 kg (3,100 lb)
+2C/SMA: 1,900 kg (4,200 lb)
+Payload to GTO
+Mass	2C/SM: 1,250 kg (2,760 lb)
+
+Total launches	57
+Success(es)	56
+Failure(s)	1
+First flight	9 September 1982
+Last flight	19 July 2021
+
+************************* Soyuz *****************************
+
+
+***************** Space Shuttle *****************************
+
+

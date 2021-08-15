@@ -104,7 +104,7 @@ void obtenerDatosMPU(){
 
 //--> BMP180 <--
 void altitud(double pressure, double temperature){ 
-  altura = (log(pressure/Po))*((R*(temperature + 273.15))/(M*g))*-1;  //Calcular altitud en [m]
+  Altura_Actual_RAM = (log(pressure/Po))*((R*(temperature + 273.15))/(M*g))*-1;  //Calcular altitud en [m]
 }
 void obtenerDatosBMP()
 {
@@ -135,7 +135,7 @@ void obtenerDatosBMP()
 }
 
 //--> GPS <--
-void obtenerDatosGPS()
+/*void obtenerDatosGPS()
 {
     while (gps.available( gpsPort )) {
     fix = gps.read();
@@ -149,7 +149,7 @@ void obtenerDatosGPS()
     }
   }
 }
-
+*/
 //--> RTC <--
 /*void obtenerDatosRTC(){
   tiempo2 = millis();
@@ -171,7 +171,7 @@ void escribirDatos(){
   archivo.print(",");
   archivo.print(P);
   archivo.print(",");
-  archivo.print(altura);
+  archivo.print(Altura_Actual_RAM);
   archivo.print(",");
   archivo.print(ax);
   archivo.print(",");
@@ -183,12 +183,12 @@ void escribirDatos(){
   archivo.print(",");
   archivo.print(gy,1);
   archivo.print(",");
-  archivo.print(gz,1);
-  archivo.print(",");
+  archivo.println(gz,1);
+ /* archivo.print(",");
   archivo.print((latitudDato),6);
   archivo.print(",");
   archivo.print((longitudDato),6);
   archivo.print(",");
-  archivo.println(altitudDato);
+  archivo.println(altitudDato);*/
   //archivo.println(fecha);
 }

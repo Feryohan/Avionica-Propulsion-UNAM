@@ -68,8 +68,8 @@
 #include <avr/wdt.h>     //Libreria para el watchdog
 #include <Wire.h>        //Libreria para la comunicacion I2C
 #include <SFE_BMP180.h>  //Libreria para el Barometro 180
-#include <NMEAGPS.h>     //Libreria para el GPS
-#include <GPSport.h>     //Libreria para el GPS
+//#include <NMEAGPS.h>     //Libreria para el GPS
+//#include <GPSport.h>     //Libreria para el GPS
 #include <SPI.h>         //Libreria interfaz SPI
 #include <SD.h>          //Libreria para tarjetas SD
 #include <EEPROM.h>      //Libreria que permite guardar valores cuando el arduino se apaga            
@@ -77,6 +77,24 @@
 
 //                                  --- Definiciones ---
 #define SSpin 10         //Pin Slave Select para el modulo micro SD
+
+//                          ----------- Ecuacion de Vuelo ------------
+//Considerando el uso de:
+//- Barometro
+//- Acelerometro
+//- RTC
+
+//(Altura_Maxima_EEPROM>>Altura_Actual_RAM>>AltTerr_EEPROM)*(Seguro Desconectado) + 
+//(Acc_const_XYZ>>1)*(Tiempo_Ascenso_EEPROM>>TIMER) + 
+//(Acc_const_XYZ<<1)*(Seguro Desconectado)*(Altura_Actual_RAM>>AltTerr_EEPROM)
+
+float Altura_Actual_RAM;
+float Altura_Maxima_EEPROM;
+float AltTerr_EEPROM = 2300;         //metros sobre el nivel del mar en el lugar que nos encontremos
+boolean Seguro = true;               //True = Conectado; False = Desconectado
+float Acc_const_XYZ;               
+float Tiempo_Ascenso_EEPROM = 8;     //Tiempo estimado (en segundos) para alcanzar el apogeo una vez que el cohete ha despegado
+
 
 //                                  --- Variables ---
 //--> MPU <--
@@ -132,11 +150,12 @@ float Po = 101325;             //Presión al nivel del mar [Pa]
 float M = 0.02896;             //Masa molar del aire [kg/mol]
 float R = 8.3143;              //Constante universal de los gases [(N*m)/(mol*K)]
 float g = 9.807;               //Aceleración gravitacional [m/s^2]
-float altura;
+
 
 //--> GPS <--
-NMEAGPS  gps; // This parses the GPS characters
+/*NMEAGPS  gps; // This parses the GPS characters
 gps_fix  fix; // This holds on to the latest values
 double altitudDato;
 double longitudDato;
 double latitudDato;
+*/
