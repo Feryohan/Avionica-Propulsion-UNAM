@@ -1,0 +1,16 @@
+- Barometro
+- Acelerometro
+- RTC
+
+(Altura_Maxima_EEPROM>>Altura_Actual_RAM>>AltTerr_EEPROM)*(Seguro Desconectado) + 
+(Acc_const_XYZ>>1)*(Tiempo_Ascenso_EEPROM>>TIMER) + 
+(Acc_const_XYZ<<1)*(Seguro Desconectado)*(Altura_Actual_RAM>>AltTerr_EEPROM)
+
+// + (Tiempo_Ascenso_EEPROM>>TIMER)*((Acc_const_XYZ<<1)+(Acc_const_XYZ>>1)) 
+
+- Barometro
+- Acelerometro
+(Altura_Maxima_EEPROM>>Altura_Actual_RAM>>AltTerr_EEPROM)*(Seguro Desconectado) + 
+(Acc_const_XYZ>>1)*(Altura_Maxima_EEPROM>>Altura_Actual_RAM>>AltTerr_EEPROM)*(Seguro Desconectado) + 
+(Acc_const_XYZ<<1)*(Altura_Maxima_EEPROM>>Altura_Actual_RAM>>AltTerr_EEPROM)*(Seguro Desconectado) + 
+(Seguro Desconectado)*((Acc_const_XYZ<<1)+(Acc_const_XYZ>>1)) 

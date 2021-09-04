@@ -1,7 +1,7 @@
 #include <EEPROM.h>
 
-//Este programa coloca las siguientes posiciones de la memoria EEPROM
-//en uno 
+//Este programa consulta las direcciones de la memoria EEPROM y permite
+//restaurarlas (poniendo un 1 en todas las direcciones)
 
 char entradaUsuario;
 

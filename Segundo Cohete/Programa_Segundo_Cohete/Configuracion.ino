@@ -15,8 +15,6 @@ void setup(){
   }
   wdt_reset();
 
-  //--> GPS <--
-  gpsPort.begin(9600);
 
   //--> BMP180 <--
   if(EEPROM.read(estadoBMP) == 1)
@@ -32,14 +30,13 @@ void setup(){
   wdt_reset();
   
   //--> RTC <--
-  /*if(EEPROM.read(estadoRTC) == 1){
+  if(EEPROM.read(estadoRTC) == 1){
     estadoSensor(1, datosRTC);
     estadoSensor(0, estadoRTC);
     rtc.adjust(DateTime(__DATE__, __TIME__));  //Obtener fecha actual
     estadoSensor(1, estadoRTC);
   }
   wdt_reset();
-  */
   
   //--> Módulo MicroSD <--
   if(EEPROM.read(estadoModuloSD) == 1){
