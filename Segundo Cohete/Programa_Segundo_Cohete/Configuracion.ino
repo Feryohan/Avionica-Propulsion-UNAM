@@ -15,8 +15,6 @@ void setup(){
   }
   wdt_reset();
 
-  //--> GPS <--
-  //gpsPort.begin(9600);
 
   //--> BMP180 <--
   if(EEPROM.read(estadoBMP) == 1)

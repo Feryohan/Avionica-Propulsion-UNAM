@@ -13,19 +13,15 @@
 //-> Libreria del MPU: https://github.com/kriswiner/MPU6050/tree/master/MPU6050Library
 //-> Register Map del MPU6050: https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf
 
-//                                       --- Uso de Memoria ---
-//- - - Con: MicroSD, GPS, MPU, Magnetometro
-// -> Almacenamiento: 87% (23634 bytes)
-// -> Dinamica: 73% (1513 bytes)
-//- - - GPS
-// -> Almacenamiento: 17% (5222 bytes)
-// -> Dinamica: 11% (225 bytes)
-//- - - MPU
-// -> Almacenamiento: 20% (6144 bytes)
-// -> Dinamica: 5% (102 bytes)
-//- - - MicroSD
-// -> Almacenamiento: 44% (13516 bytes)
-// -> Dinamica: 55% (1126 bytes)
+//                     ----------- Condición para estar en Ascenso ------------
+//((Alt_Actual_RAM >> AltTerr_EEPROM)&&(estadoSeguro)) ||
+//((estadoSeguro)&&(AccXYZ_Max>>1)) ||
+//((AccXYZ_Max>>1)&&(Alt_Actual_RAM >> AltTerr_EEPROM))
+
+//                          ----------- Ecuacion de Vuelo ------------
+//(Altura_Maxima_EEPROM>>Altura_Actual_RAM>>AltTerr_EEPROM) || 
+//(contadorTiempo>>Tiempo_Ascenso_EEPROM) ||
+//((AccXYZ_Min<<1)&&(Altura_Maxima_EEPROM>>Altura_Actual_RAM))
 
 //                                    --- Direcciones de los sensores ---
 //-> MPU6050   - 0x69 (Con una alimentación de 3.3 V en el pin AD0)
@@ -35,18 +31,16 @@
 #include <avr/wdt.h>     //Libreria para el watchdog
 #include <Wire.h>        //Libreria para la comunicacion I2C
 #include <SFE_BMP180.h>  //Libreria para el Barometro 180
-//#include <NMEAGPS.h>     //Libreria para el GPS
-//#include <GPSport.h>     //Libreria para el GPS
 #include <SPI.h>         //Libreria interfaz SPI
 #include <SD.h>          //Libreria para tarjetas SD
 #include <EEPROM.h>      //Libreria que permite guardar valores cuando el arduino se apaga            
-#include <RTClib.h>    //Libreria para el manejo del modulo RTC
+#include <RTClib.h>      //Libreria para el manejo del modulo RTC
 
 
 //                              --- Direcciones de la memoria EEPROM ---
-//   0 -> Estado de vuelo: E (69), A (65), D (68)
+//   0 -> Estado de vuelo: 0 (Espera), 1 (Ascenso), 2 (Descenso)
       byte estadoVuelo = 0;
-//   1 -> Estado Acelerometro y Giroscopio (MPU6050): 0 (Fallo MPU), 1 (Inicio MPU)
+//   1 -> Estado Acelerometro (MPU6050): 0 (Fallo MPU), 1 (Inicio MPU)
       byte estadoMPU = 1;
 //   2 -> Datos MPU6050: 0 (Fallo funcion obtenerDatosMPU, no se pueden leer los datos), 1 (Datos MPU accesibles)
       byte datosMPU = 2;
@@ -64,55 +58,46 @@
       byte estadoBMP = 8;
 //   9 -> Datos BMP180: 0 (Fallo funcion obtenerDatosBMP180, no se pueden leer los datos), 1 (Datos BMP180 accesibles)
       byte datosBMP = 9;
-//   10 -> Estado GPS: 0 (Fallo GPS), 1 (Inicio GPS)
-      byte estadoGPS = 10;
-//   11 -> Datos GPS: 0 (Fallo funcion obtenerDatosGPS, no se pueden leer los datos), 1 (Datos GPS accesibles)
-      byte datosGPS = 11;
 //   20 -> Seguro: 0 (desconectado), 1 (conectado)
      byte direccSeguro = 20;     
 
-//   80 -> Direccion de archivo: De esta dirección se secan los numeros para los archivos "Datos#.txt"
+//   80 -> Direccion de archivo: De esta dirección se sacan los numeros para los archivos "Datos#.txt"
      byte direccFile = 80;       
-//   150 -> Direccion de AltTerr_EEPROM
-     byte direcc_AltTerr_EEPROM = 150;
-//   250 -> Direccion de Altura_Maxima_EEPROM
-     byte direcc_Alt_Max_EEPROM = 250;           
-//   350 -> Direccion de Acc_const_XYZ;
-     byte direcc_Acc_const_XYZ = 350;
-//   450 -> Direccion de Tiempo_Ascenso_EEPROM;
-     byte direcc_Tiempo_Ascenso_EEPROM = 450;     
+//   150 -> Direccion para guardar la AltTerr_EEPROM
+     float direcc_AltTerr_EEPROM = 150;
+//   250 -> Direccion para guardar la Altura_Maxima_EEPROM
+     float direcc_Alt_Max_EEPROM = 250;
+//   350 -> Direccion para guardar el Tiempo_Ascenso_EEPROM;
+     float direcc_Tiempo_Ascenso_EEPROM = 350;     
 
-//                                  --- Definiciones ---
-#define SSpin 10         //Pin Slave Select para el modulo micro SD
-
-//                          ----------- Ecuacion de Vuelo ------------
-//Considerando el uso de:
-//- Barometro
-//- Acelerometro
-//- RTC
-
-//(Altura_Maxima_EEPROM>>Altura_Actual_RAM>>AltTerr_EEPROM)*(Seguro Desconectado) + 
-//(Acc_const_XYZ>>1)*(Tiempo_Ascenso_EEPROM>>TIMER) + 
-//(Acc_const_XYZ<<1)*(Seguro Desconectado)*(Altura_Actual_RAM>>AltTerr_EEPROM)
-
-float Altura_Actual_RAM;
+//                                  --- Variables ---
+#define SSpin 10                     //Pin Slave Select para el modulo micro SD
+//--> Para la ecuacion de vuelo
+float Altura_Actual_RAM;             //Es la que se va guardando en la micro SD
+float Altura_Anterior_RAM;
 float Altura_Maxima_EEPROM;
-float AltTerr_EEPROM = 2300;         //metros sobre el nivel del mar en el lugar que nos encontremos
-boolean Seguro = true;               //True = Conectado; False = Desconectado
-float Acc_const_XYZ;               
-byte Tiempo_Ascenso_EEPROM = 8;     //Tiempo estimado (en segundos) para alcanzar el apogeo una vez que el cohete ha despegado
+float AltTerr_EEPROM;
+float Altura_No_Filtrada;
+//float Altura_Maxima_EEPROM;          //Se guarda cada segundo en la dirección: direcc_Alt_Max_EEPROM
+byte  estadoSeguro;                  //0 (desconectado), 1 (conectado)
+#define   numeroMediaMovil 8            //Numero de lecturas que consideramos para el cálculo de las medias móviles
+int numeroDeLectura = 1;
+long arregloAccXYZ[numeroMediaMovil];   //Arreglo en el que se almacenarán los valores de moduloAccXYZ
+long arregloAlturas[numeroMediaMovil];
+float moduloAccXYZ;                  //moduloAccXYZ = sqrt( (ax^2) + (ay^2) + (az^2) )
+float AccXYZAnterior;                //Resultado de la media movil de la aceleracion un instante antes
+float AccXYZ;                        //Resultado de la media movil de la aceleracion en este instante
+float AccXYZMax;                     //Aceleración Máxima de media movil
+float AccXYZMin;                     //Aceleración Mínima de media movil
+byte contadorTiempo;
 
 //                                  --- Variables ---
 //--> MPU <--
-byte Gscale = 3;
 byte Ascale = 3;
 //Para los valores de salida
-float Gescala = 2000.0 / 32768.0;
 float Aescala = (16.0 / 32768.0)*1000;
 int16_t accelCount[3];           // Stores the 16-bit signed accelerometer sensor output
 float ax, ay, az;                // Unidades = G's
-int16_t gyroCount[3];            // Stores the 16-bit signed gyro sensor output
-float gx, gy, gz;  
 #define MPU6050_ADDRESS  0x69
 #define PWR_MGMT_1       0x6B
 #define INT_PIN_CFG      0x37
@@ -128,12 +113,6 @@ float gx, gy, gz;
 #define ACCEL_YOUT_L  0x3E
 #define ACCEL_ZOUT_H  0x3F
 #define ACCEL_ZOUT_L  0x40
-#define GYRO_XOUT_H   0x43
-#define GYRO_XOUT_L   0x44
-#define GYRO_YOUT_H   0x45
-#define GYRO_YOUT_L   0x46
-#define GYRO_ZOUT_H   0x47
-#define GYRO_ZOUT_L   0x48
 
 //--> RTC <--
 RTC_DS3231 rtc;
@@ -156,12 +135,3 @@ float Po = 101325;             //Presión al nivel del mar [Pa]
 float M = 0.02896;             //Masa molar del aire [kg/mol]
 float R = 8.3143;              //Constante universal de los gases [(N*m)/(mol*K)]
 float g = 9.807;               //Aceleración gravitacional [m/s^2]
-
-
-//--> GPS <--
-/*NMEAGPS  gps; // This parses the GPS characters
-gps_fix  fix; // This holds on to the latest values
-double altitudDato;
-double longitudDato;
-double latitudDato;
-*/
